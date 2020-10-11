@@ -27,6 +27,4 @@ const dishSchema = mongoose.Schema({
     }
 })
 
-
-
-module.exports = mongoose.model('Dishes', dishSchema);
+module.exports = mongoose.model('Dish', dishSchema);

@@ -1,17 +1,17 @@
 const jwt = require("jsonwebtoken");
+var auth = {}
+const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
-const auth = function isLoggedIn(req, res, next) {
-    const token = req.cookies.authToken
+auth.isloggedin = function(req, res, next){
+    const token = req.headers.authtoken
     if (!token) {
         res.send("access denied");
     } else {
-        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        const verified = jwt.verify(token, TOKENSECRET);
         req.user = verified;
         console.log(req.user);
         next();
     }
 }
 
-module.exports = {
-    auth
-}
+module.exports = auth
