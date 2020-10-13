@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const AdminRoutes = require('./Routes/restaurant');
-const DishRoutes = require('./Routes/dishes');
+// const DishRoutes = require('./Routes/dishes');
+const UserRoutes = require('./Routes/user')
 const mongoose = require('mongoose');
 const bodyparser = require("body-parser");
 
@@ -14,7 +15,8 @@ mongoose.connect('mongodb+srv://mayuri:3oOrxk6VIh2oIsHn@cluster0.rhdr5.mongodb.n
 })
 
 app.use('/api/restaurant', AdminRoutes);
-app.use('/api/', DishRoutes);
+app.use('/api/user', UserRoutes);
+// app.use('/api/', DishRoutes);
 
 const PORT = 7000;
 app.listen(PORT, (err) => {
