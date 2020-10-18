@@ -14,10 +14,11 @@ var RestaurantSchema = new mongoose.Schema({
                 type: String
         },
         menu: [{
-                type:mongoose.Schema.Types.ObjectId,
-                ref :"Dish"
-            }
-        ],
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Dishes"
+        }],
+}, {
+        timestamps: true
 });
 
 module.exports = mongoose.model("Restaurant", RestaurantSchema);

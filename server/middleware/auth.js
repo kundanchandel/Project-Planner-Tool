@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
-var auth = {}
+
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
-auth.isloggedin = function(req, res, next){
+function isloggedin(req, res, next) {
     const token = req.headers.authtoken
     if (!token) {
         res.send("access denied");
@@ -14,4 +14,4 @@ auth.isloggedin = function(req, res, next){
     }
 }
 
-module.exports = auth
+module.exports = isloggedin;

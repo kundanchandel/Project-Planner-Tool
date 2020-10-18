@@ -24,7 +24,13 @@ const dishSchema = mongoose.Schema({
     quantity: {
         type: Number,
 
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant'
     }
+}, {
+    timestamps: true
 })
 
-module.exports = mongoose.model('Dish', dishSchema);
+module.exports = mongoose.model('Dishes', dishSchema);
