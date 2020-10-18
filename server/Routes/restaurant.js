@@ -5,6 +5,7 @@ var Admin = require('../models/Restaurant/restaurant');
 var jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const uuid = require('uuid');
+const Dish= require('../models/Dish');
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 

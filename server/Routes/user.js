@@ -2,6 +2,7 @@ var express = require('express');
 var Router = express.Router();
 var bcrypt = require('bcrypt');
 var User = require('../models/User');
+var Restaurant = require('../models/Restaurant/restaurant');
 var jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 
@@ -64,17 +65,41 @@ Router.post('/signin', async (req, res, next) => {
 });
 
 
-// Router.get('/dishes', auth, async (req, res, next) => {
-// 	try {
-// 		const dishes = await Dishes.find();
-// 		res.json(dishes);
-// 	} catch (err) {
-// 		res.json({
-// 			message: err
-// 		});
-// 	}
+Router.get('/restaurant', async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.find();
+		res.json(restaurant);
+	} catch (err) {
+		res.json({
+			message: err
+		});
+	}
 
-// });
+});
+
+Router.get('/restaurant/:id', async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.findOne({_id:req.params.id});
+		res.json(restaurant);
+	} catch (err) {
+		res.json({
+			message: err
+		});
+	}
+
+});
+
+Router.get('/restaurant/:id/dish', async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.findOne({_id:req.params.id}).populate('menu').exec();
+		res.json(restaurant);
+	} catch (err) {
+		res.json({
+			message: err
+		});
+	}
+
+});
 
 
 module.exports = Router;
