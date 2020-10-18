@@ -5,8 +5,6 @@ var User = require('../models/User');
 var jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 
-
-
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
 Router.post('/signup', async (req, res, next) => {

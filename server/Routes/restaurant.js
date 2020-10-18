@@ -6,8 +6,6 @@ var jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const uuid = require('uuid');
 
-
-
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
 Router.post('/signup', async (req, res, next) => {
@@ -66,58 +64,50 @@ Router.post('/signin', async (req, res, next) => {
 	});
 });
 
-// Router.get('/dishes', auth, async (req, res, next) => {
-// 	try {
-// 		const dishes = await Dishes.find();
-// 		res.json(dishes);
-// 	} catch (err) {
-// 		res.json({
-// 			message: err
-// 		});
-// 	}
+Router.get('/', auth.isloggedin,async(req, res, next)=>{
+	const restEmail = req.user.adminEmail
+	const rest = await Admin.findOne({email:restEmail}).populate('menu').exec()
+	res.send(rest)
+});
 
-// });
-// Router.post("/restaurant/dish", auth, async (req, res, next) => {
-// 	const restId = req.user._id;
-// 	var rest = await Restaurant.findOne({
-// 		_id: restId
-// 	});
-// 	//TODO: Create id and push it to data object
-// 	var data = req.body; //{dishName,dishImageURL, dishType, dishPrice, dishDesc, dishQnt, dishID}
-// 	rest.menu.push(data);
-// 	rest.save();
-// 	res.status(200).send(rest.menu);
-// })
+Router.post('/dish',auth.isloggedin, async(req, res,next)=>{
+	const data = req.body
+	const dish = await Dish.create(data)
+	const restEmail = req.user.adminEmail
+	const rest = await Admin.findOne({email:restEmail})
+	rest.menu.push(dish._id)
+	rest.save()
+	res.send(dish)
+});
 
-// Router.get("/restaurant/dish", auth, async (req, res, next) => {
-// 	const restId = req.user._id;
-// 	var rest = await Restaurant.findOne({
-// 		_id: restId
-// 	});
-// 	res.status(200).send(rest.menu);
-// })
+Router.get('/dish/:dishid', async(req, res, next)=>{
+	const dish = await Dish.findOne({_id: req.params.dishid})
+	res.send(dish)
+});
 
-// Router.delete("/restaurant/dish/:dishId", auth, async (req, res, next) => {
-// 	const restId = req.user._id;
-// 	const dishId = req.params.dishId;
-// 	var rest = await Restaurant.findOne({
-// 		_id: restId
-// 	});
-// 	var index = -1;
-// 	for (var i = 0; i < rest.menu.length; i++) {
-// 		if (rest.menu[i]._id == dishId) {
-// 			index = i;
-// 			break;
-// 		}
-// 	}
-// 	if (index == -1) {
-// 		return res.status(400).send({
-// 			err: "Dish not found"
-// 		})
-// 	}
-// 	rest.menu.splice(index, 1);
-// 	rest.save();
-// 	res.status(200).send(rest.menu);
-// });
+Router.put('/dish/:dishid', auth.isloggedin, async(req, res ,next) =>{
+	const dish = await Dish.findOne({_id: req.params.dishid})
+	const {name, image, price, desc, category} = req.body	
+	dish.name= name
+	dish.price= price
+	dish.image= image
+	dish.desc= desc
+	dish.category= category
+	dish.save()
+	res.send(dish)
+});
+
+Router.delete('/dish/:dishid', auth.isloggedin, async(req, res ,next) =>{
+	const dish = await Dish.findOneAndDelete({_id: req.params.dishid})
+	const adminEmail = req.user.adminEmail
+	const rest = await Admin.findOne({email:adminEmail})
+	const index = rest.menu.indexOf(req.params.dishid)
+	if(index!=-1) {
+		rest.menu.splice(index, 1)
+	}
+	rest.save()
+	res.send(dish)
+});
+
 
 module.exports = Router;
