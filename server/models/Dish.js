@@ -13,9 +13,15 @@ const dishSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    total: {
+        type: Number
+    },
+    tax: {
+        type: Number,
+    },
     category: {
         type: String,
-        required: true
+
     },
     desc: {
         type: String,

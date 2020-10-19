@@ -14,13 +14,13 @@ const userSchema = mongoose.Schema({
         required: true
     },
     pastorders: [{
-        type:mongoose.Schema.Types.ObjectId,
-        ref :"Order"
-    }],
-    currentorder: {
-        type : mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Order"
-    }
+    }],
+    currentorder: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order"
+    }]
 })
 
 module.exports = mongoose.model('User', userSchema);

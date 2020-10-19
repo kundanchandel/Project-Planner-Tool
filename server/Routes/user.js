@@ -1,11 +1,11 @@
-var express = require('express');
-var Router = express.Router();
-var bcrypt = require('bcrypt');
-var User = require('../models/User');
-var jwt = require('jsonwebtoken');
-const auth = require('../middleware/auth');
-
-
+const express = require('express');
+const Router = express.Router();
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
+const Restaurant = require('../models/Restaurant/restaurant');
+const jwt = require('jsonwebtoken');
+const isloggedin = require('../middleware/auth');
+const Order = require('../models/Order');
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
@@ -61,22 +61,75 @@ Router.post('/signin', async (req, res, next) => {
 		userEmail: user.email
 	}, TOKENSECRET);
 	res.status(200).json({
-		"message":"Signed in successfully"
-    });
+		"message": "Signed in successfully"
+	});
 });
 
 
-// Router.get('/dishes', auth, async (req, res, next) => {
-// 	try {
-// 		const dishes = await Dishes.find();
-// 		res.json(dishes);
-// 	} catch (err) {
-// 		res.json({
-// 			message: err
-// 		});
-// 	}
+Router.get('/restaurant', async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.find();
+		res.json(restaurant);
+	} catch (err) {
+		res.json({
+			message: err
+		});
+	}
 
-// });
+});
+
+Router.get('/restaurant/:id', async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.findOne({
+			_id: req.params.id
+		});
+		res.json(restaurant);
+	} catch (err) {
+		res.json({
+			message: err
+		});
+	}
+
+});
+
+Router.get('/restaurant/:id/dish', async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.findOne({
+			_id: req.params.id
+		}).populate('menu').exec();
+		res.json(restaurant);
+	} catch (err) {
+		res.json({
+			message: err
+		});
+	}
+
+});
+
+
+Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
+	const data = req.body
+	const order = await Order.create(data)
+	console.log(data.dish);
+	const userEmail = req.user.userEmail
+	const user = await User.findOne({
+		email: userEmail
+	})
+	// if(order.isPaid == true){
+	// user.pastorders.push(order._id)
+	// Order.findByIdAndRemove({_id: order._id})}
+
+	// res.send(dish)
+	if (Array.isArray(user.currentorder)) {
+		user.currentorder.push(order._id)
+	} else {
+		user.currentorder = order._id;
+	}
+	// user.currentorder.push(order._id)
+	user.save()
+	res.json(order)
+
+});
 
 
 module.exports = Router;

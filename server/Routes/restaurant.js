@@ -6,8 +6,8 @@ const Dishes = require('../models/Dish');
 const jwt = require('jsonwebtoken');
 const isloggedin = require('../middleware/auth');
 const uuid = require('uuid');
-
-
+const Dish = require('../models/Dish');
+const fetch = require('node-fetch');
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
@@ -97,7 +97,84 @@ Router.delete("/restaurant/dish/:dishId", isloggedin, async (req, res, next) => 
 	rest.menu.splice(index, 1);
 	rest.save();
 	res.status(200).send(rest.menu);
+})
+Router.get('/', isloggedin, async (req, res, next) => {
+	const restEmail = req.user.adminEmail
+	const rest = await Admin.findOne({
+		email: restEmail
+	}).populate('menu').exec()
+	res.send(rest)
 });
+
+Router.post('/dish', isloggedin, async (req, res, next) => {
+	const data = req.body
+	const dish = await Dish.create(data)
+	const restEmail = req.user.adminEmail
+	const rest = await Admin.findOne({
+		email: restEmail
+	})
+	rest.menu.push(dish._id)
+	rest.save()
+	res.send(dish)
+});
+
+Router.get('/dish/:dishid', async (req, res, next) => {
+	const dish = await Dish.findOne({
+		_id: req.params.dishid
+	})
+	res.send(dish)
+});
+
+Router.put('/dish/:dishid', isloggedin, async (req, res, next) => {
+	const dish = await Dish.findOne({
+		_id: req.params.dishid
+	})
+	const {
+		name,
+		image,
+		price,
+		desc,
+		category
+	} = req.body
+	dish.name = name
+	dish.price = price
+	dish.image = image
+	dish.desc = desc
+	dish.category = category
+	dish.save()
+	res.send(dish)
+});
+
+Router.delete('/dish/:dishid', isloggedin, async (req, res, next) => {
+	const dish = await Dish.findOneAndDelete({
+		_id: req.params.dishid
+	})
+	const adminEmail = req.user.adminEmail
+	const rest = await Admin.findOne({
+		email: adminEmail
+	})
+	const index = rest.menu.indexOf(req.params.dishid)
+	if (index != -1) {
+		rest.menu.splice(index, 1)
+	}
+	rest.save()
+	res.send(dish)
+});
+
+
+//FETCHING ORDER FROM USER
+// Router.get('/restaurant/orders', isloggedin, async (req, res, next) => {
+// 	const api = "http://localhost:7000/api/user/restaurant/5f8d6d1046fa624c9e823d6c/order";
+// 	fetch(api)
+// 		.then(response => {
+// 			return response.json();
+// 		})
+// 		.then(data => {
+// 			console.log(data);
+
+// 		});
+
+// })
 
 
 module.exports = Router;
