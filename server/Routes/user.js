@@ -42,7 +42,7 @@ Router.post('/signup', async (req, res, next) => {
 	});
 })
 
-Router.post('/signin', async (req, res, next) => {
+Router.post('/login', async (req, res, next) => {
 	const {
 		email,
 		password
@@ -66,7 +66,7 @@ Router.post('/signin', async (req, res, next) => {
 });
 
 
-Router.get('/restaurant', async (req, res, next) => {
+Router.get('/restaurant', isloggedin, async (req, res, next) => {
 	try {
 		const restaurant = await Restaurant.find();
 		res.json(restaurant);
@@ -77,6 +77,7 @@ Router.get('/restaurant', async (req, res, next) => {
 	}
 
 });
+
 
 Router.get('/restaurant/:id', async (req, res, next) => {
 	try {
@@ -92,7 +93,7 @@ Router.get('/restaurant/:id', async (req, res, next) => {
 
 });
 
-Router.get('/restaurant/:id/dish', async (req, res, next) => {
+Router.get('/restaurant/:id/menu', async (req, res, next) => {
 	try {
 		const restaurant = await Restaurant.findOne({
 			_id: req.params.id
@@ -115,17 +116,11 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 	const user = await User.findOne({
 		email: userEmail
 	})
-	// if(order.isPaid == true){
-	// user.pastorders.push(order._id)
-	// Order.findByIdAndRemove({_id: order._id})}
-
-	// res.send(dish)
 	if (Array.isArray(user.currentorder)) {
 		user.currentorder.push(order._id)
 	} else {
 		user.currentorder = order._id;
 	}
-	// user.currentorder.push(order._id)
 	user.save()
 	res.json(order)
 

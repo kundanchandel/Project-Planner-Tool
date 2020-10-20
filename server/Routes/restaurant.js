@@ -1,6 +1,7 @@
 const express = require('express');
 const Router = express.Router();
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 const Restaurant = require('../models/Restaurant/restaurant');
 const Dishes = require('../models/Dish');
 const jwt = require('jsonwebtoken');
@@ -8,9 +9,13 @@ const isloggedin = require('../middleware/auth');
 const uuid = require('uuid');
 const Dish = require('../models/Dish');
 const fetch = require('node-fetch');
+const Order = require('../models/Order');
+const User = require('../models/User');
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
+
+//ADMIN SIGNUP
 Router.post('/signup', async (req, res, next) => {
 	const {
 		username,
@@ -44,6 +49,7 @@ Router.post('/signup', async (req, res, next) => {
 	});
 })
 
+//ADMIN LOGIN
 Router.post('/signin', async (req, res, next) => {
 	const {
 		email,
@@ -67,57 +73,17 @@ Router.post('/signin', async (req, res, next) => {
 	});
 });
 
-
-Router.get("/restaurant/dish", isloggedin, async (req, res, next) => {
-	const restId = req.user._id;
+//DISPLAYING ALL DISHES TO ADMIN
+Router.get("/dish", isloggedin, async (req, res, next) => {
+	const restId = req.Restaurant.id;
 	const rest = await Restaurant.findOne({
 		_id: restId
 	});
-	res.status(200).send(rest.menu);
-})
-
-Router.delete("/restaurant/dish/:dishId", isloggedin, async (req, res, next) => {
-	const restId = req.user._id;
-	const dishId = req.params.dishId;
-	const rest = await Restaurant.findOne({
-		_id: restId
-	});
-	const index = -1;
-	for (const i = 0; i < rest.menu.length; i++) {
-		if (rest.menu[i]._id == dishId) {
-			index = i;
-			break;
-		}
-	}
-	if (index == -1) {
-		return res.status(400).send({
-			err: "Dish not found"
-		})
-	}
-	rest.menu.splice(index, 1);
-	rest.save();
-	res.status(200).send(rest.menu);
-})
-Router.get('/', isloggedin, async (req, res, next) => {
-	const restEmail = req.user.adminEmail
-	const rest = await Admin.findOne({
-		email: restEmail
-	}).populate('menu').exec()
-	res.send(rest)
+	res.status(200).json(rest.menu);
 });
 
-Router.post('/dish', isloggedin, async (req, res, next) => {
-	const data = req.body
-	const dish = await Dish.create(data)
-	const restEmail = req.user.adminEmail
-	const rest = await Admin.findOne({
-		email: restEmail
-	})
-	rest.menu.push(dish._id)
-	rest.save()
-	res.send(dish)
-});
 
+//GET A DISH WITH ID
 Router.get('/dish/:dishid', async (req, res, next) => {
 	const dish = await Dish.findOne({
 		_id: req.params.dishid
@@ -125,32 +91,26 @@ Router.get('/dish/:dishid', async (req, res, next) => {
 	res.send(dish)
 });
 
-Router.put('/dish/:dishid', isloggedin, async (req, res, next) => {
-	const dish = await Dish.findOne({
-		_id: req.params.dishid
+//ADD DISHES
+Router.post('/dish', isloggedin, async (req, res, next) => {
+	const data = req.body
+	const dish = await Dish.create(data)
+	const restEmail = req.user.adminEmail
+	const rest = await Restaurant.findOne({
+		email: restEmail
 	})
-	const {
-		name,
-		image,
-		price,
-		desc,
-		category
-	} = req.body
-	dish.name = name
-	dish.price = price
-	dish.image = image
-	dish.desc = desc
-	dish.category = category
-	dish.save()
+	rest.menu.push(dish._id)
+	rest.save()
 	res.send(dish)
 });
 
+//DELETE DISH
 Router.delete('/dish/:dishid', isloggedin, async (req, res, next) => {
 	const dish = await Dish.findOneAndDelete({
 		_id: req.params.dishid
 	})
 	const adminEmail = req.user.adminEmail
-	const rest = await Admin.findOne({
+	const rest = await Restaurant.findOne({
 		email: adminEmail
 	})
 	const index = rest.menu.indexOf(req.params.dishid)
@@ -160,6 +120,71 @@ Router.delete('/dish/:dishid', isloggedin, async (req, res, next) => {
 	rest.save()
 	res.send(dish)
 });
+
+//UPDATE DISH
+Router.put('/dish/:dishid', isloggedin, async (req, res, next) => {
+	const dish = await Dish.findOneAndUpdate({
+		_id: req.params.dishid
+	}, {
+		$set: req.body
+	}, {
+		new: true
+	})
+	res.json(dish)
+});
+
+//
+Router.get('/', isloggedin, async (req, res, next) => {
+	const restEmail = req.user.adminEmail
+	const rest = await Restaurant.findOne({
+		email: restEmail
+	}).populate('menu').exec()
+	res.send(rest)
+});
+
+//UPDATE THE WHETHER THE ORDER IS PAID OR NOT
+Router.put('/order/:id', isloggedin, async (req, res, next) => {
+	try {
+		const order = await Order.findOneAndUpdate({
+			_id: req.params.id
+		}, {
+			$set: {
+				isPaid: req.body.isPaid
+			}
+		}, {
+			new: true
+		})
+		console.log(order);
+		res.send(order);
+		const user = order.user;
+		const ObjectId = mongoose.Types.ObjectId;
+		if (req.body.isPaid === true) {
+			user.pastorders.push(order);
+
+			let query = {
+				_id: new ObjectId(req.params.id)
+			}
+			user.currentorder.delete(query, function (err) {
+				if (err) {
+					console.log(err);
+				}
+				res.send('Success');
+			})
+		}
+		console.log(query)
+		res.json(order)
+	} catch (error) {
+		res.json(error)
+	}
+
+});
+// if (Array.isArray(user.currentorder)) {
+// 	user.currentorder.push(order._id)
+// } else {
+// 	user.currentorder = order._id;
+// }
+// user.save()
+
 
 
 //FETCHING ORDER FROM USER
