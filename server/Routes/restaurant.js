@@ -11,6 +11,9 @@ const Dish = require('../models/Dish');
 const fetch = require('node-fetch');
 const Order = require('../models/Order');
 const User = require('../models/User');
+const {
+	deleteOne
+} = require('../models/Restaurant/restaurant');
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
@@ -153,53 +156,38 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 			}
 		}, {
 			new: true
-		})
+		});
 		console.log(order);
-		res.send(order);
-		const user = order.user;
-		const ObjectId = mongoose.Types.ObjectId;
 		if (req.body.isPaid === true) {
-			user.pastorders.push(order);
-
-			let query = {
-				_id: new ObjectId(req.params.id)
-			}
-			user.currentorder.delete(query, function (err) {
-				if (err) {
-					console.log(err);
+			const user = User.findOneAndUpdate({
+				_id: order.user
+			}, {
+				$set: {
+					pastorders: req.params.id,
+					currentorder: null
 				}
-				res.send('Success');
-			})
+			}, {
+				new: true
+			});
+			console.log((await user)._id);
+		} else {
+			const user = User.findOneAndUpdate({
+				_id: order.user
+			}, {
+				$set: {
+					currentorder: req.params.id,
+				}
+			}, {
+				new: true
+			});
+			console.log((await user)._id);
 		}
-		console.log(query)
 		res.json(order)
 	} catch (error) {
 		res.json(error)
 	}
 
 });
-// if (Array.isArray(user.currentorder)) {
-// 	user.currentorder.push(order._id)
-// } else {
-// 	user.currentorder = order._id;
-// }
-// user.save()
-
-
-
-//FETCHING ORDER FROM USER
-// Router.get('/restaurant/orders', isloggedin, async (req, res, next) => {
-// 	const api = "http://localhost:7000/api/user/restaurant/5f8d6d1046fa624c9e823d6c/order";
-// 	fetch(api)
-// 		.then(response => {
-// 			return response.json();
-// 		})
-// 		.then(data => {
-// 			console.log(data);
-
-// 		});
-
-// })
 
 
 module.exports = Router;
