@@ -1,3 +1,4 @@
+// Middleware for checking wheather the user is loggedin or not. 
 const jwt = require("jsonwebtoken");
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
