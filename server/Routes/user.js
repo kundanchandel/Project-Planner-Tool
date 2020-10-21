@@ -109,22 +109,42 @@ Router.get('/restaurant/:id/menu', async (req, res, next) => {
 
 
 Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
-	const data = req.body
-	const order = await Order.create(data)
-	console.log(data.dish);
 	const userEmail = req.user.userEmail
+
 	const user = await User.findOne({
 		email: userEmail
 	})
-	if (Array.isArray(user.currentorder)) {
-		user.currentorder.push(order._id)
-	} else {
-		user.currentorder = order._id;
-	}
-	user.save()
-	res.json(order)
 
+	if((user.pastorders==null && user.currentorder==null) || (user.currentorder==null)){
+		const data = req.body
+		const order = await Order.create(data)
+		console.log(data.dish);
+		
+		if (Array.isArray(user.currentorder)) {
+			user.currentorder.push(order._id)
+		} else {
+			user.currentorder = order._id;
+		}
+		user.save()
+		res.json(order)
+	}else {
+		const data=req.body
+		const orderId=user.currentorder._id;
+		console.log(orderId)
+		const updatedOrder = await Order.findOneAndUpdate({_id: orderId},
+			{
+
+				$push:{
+					dish: data.dish
+				}
+			},{
+				new: true
+			})
+			console.log(updatedOrder)
+		res.json(updatedOrder)
+	}
 });
+
 
 
 module.exports = Router;

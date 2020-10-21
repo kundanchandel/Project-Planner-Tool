@@ -162,8 +162,10 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 			const user = User.findOneAndUpdate({
 				_id: order.user
 			}, {
-				$set: {
+				$addToSet: {
 					pastorders: req.params.id,
+				},
+				$set:{
 					currentorder: null
 				}
 			}, {

@@ -17,10 +17,10 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order"
     }],
-    currentorder: [{
+    currentorder: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order"
-    }]
+    }
 })
 
 module.exports = mongoose.model('User', userSchema);
