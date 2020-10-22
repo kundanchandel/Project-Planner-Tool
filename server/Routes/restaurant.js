@@ -1,19 +1,20 @@
-const express = require('express');
-const Router = express.Router();
-const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
-const Restaurant = require('../models/Restaurant/restaurant');
-const Dishes = require('../models/Dish');
-const jwt = require('jsonwebtoken');
+const express    = require('express');
+const Router     = express.Router();
+const bcrypt     = require('bcrypt');
+const mongoose   = require('mongoose');
+const jwt        = require('jsonwebtoken');
+const fetch      = require('node-fetch');
+const uuid       = require('uuid');
+
 const isloggedin = require('../middleware/auth');
-const uuid = require('uuid');
-const Dish = require('../models/Dish');
-const fetch = require('node-fetch');
-const Order = require('../models/Order');
-const User = require('../models/User');
+const Dish       = require('../models/Dish');
+const Order      = require('../models/Order');
+const Restaurant = require('../models/Restaurant');
+const User       = require('../models/User');
+
 const {
 	deleteOne
-} = require('../models/Restaurant/restaurant');
+} = require('../models/Restaurant');
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 

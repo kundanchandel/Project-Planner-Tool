@@ -1,12 +1,12 @@
-const express = require('express');
-const app = express();
+const express     = require('express');
+const app         = express();
 const AdminRoutes = require('./Routes/restaurant');
 require("dotenv").config()
 
 // const DishRoutes = require('./Routes/dishes');
 
 const UserRoutes = require('./Routes/user')
-const mongoose = require('mongoose');
+const mongoose   = require('mongoose');
 const bodyparser = require("body-parser");
 
 app.use(bodyparser.json());

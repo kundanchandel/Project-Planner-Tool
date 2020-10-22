@@ -11,7 +11,7 @@ const orderSchema = mongoose.Schema({
     },
     dish: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Dishes'
+        ref: 'Dish'
     }],
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -22,4 +22,4 @@ const orderSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Orders', orderSchema);
+module.exports = mongoose.model('Order', orderSchema);

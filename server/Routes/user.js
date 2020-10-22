@@ -1,11 +1,13 @@
-const express = require('express');
-const Router = express.Router();
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
-const Restaurant = require('../models/Restaurant/restaurant');
-const jwt = require('jsonwebtoken');
+const express    = require('express');
+const Router     = express.Router();
+const jwt        = require('jsonwebtoken');
+const bcrypt     = require('bcrypt');
+
 const isloggedin = require('../middleware/auth');
-const Order = require('../models/Order');
+const Order      = require('../models/Order');
+const Restaurant = require('../models/Restaurant');
+const User       = require('../models/User');
+
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
@@ -119,12 +121,12 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 		const data = req.body
 		const order = await Order.create(data)
 		console.log(data.dish);
-		
-		if (Array.isArray(user.currentorder)) {
-			user.currentorder.push(order._id)
-		} else {
-			user.currentorder = order._id;
-		}
+		user.currentorder = order._id;
+		// if (Array.isArray(user.currentorder)) {
+		// 	user.currentorder.push(order._id)
+		// } else {
+		// 	user.currentorder = order._id;
+		// }
 		user.save()
 		res.json(order)
 	}else {
