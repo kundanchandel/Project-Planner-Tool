@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const orderSchema = mongoose.Schema({
-    subTotal: {
+    orderTotal: {
         default: 0,
         type: Number
     },
@@ -11,7 +11,7 @@ const orderSchema = mongoose.Schema({
     },
     dish: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Dish'
+        ref: "Dish"
     }],
     user: {
         type: mongoose.Schema.Types.ObjectId,

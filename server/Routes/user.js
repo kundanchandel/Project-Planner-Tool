@@ -112,10 +112,10 @@ Router.get('/restaurant/:id/menu', async (req, res, next) => {
 
 Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 	const userEmail = req.user.userEmail
-
 	const user = await User.findOne({
 		email: userEmail
 	})
+
 
 	if((user.pastorders==null && user.currentorder==null) || (user.currentorder==null)){
 		const data = req.body
@@ -130,8 +130,8 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 		user.save()
 		res.json(order)
 	}else {
-		const data=req.body
 		const orderId=user.currentorder._id;
+		const data=req.body
 		console.log(orderId)
 		const updatedOrder = await Order.findOneAndUpdate({_id: orderId},
 			{
@@ -145,6 +145,15 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 			console.log(updatedOrder)
 		res.json(updatedOrder)
 	}
+
+	//CALCULATE PRICE
+	const orderId=req.body.id;
+	const order = await Order.findOne({
+		id: orderId
+	})
+	.populate('dish')
+	.exec()
+	console.log(order)
 });
 
 

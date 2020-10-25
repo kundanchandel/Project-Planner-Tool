@@ -13,15 +13,11 @@ const dishSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    total: {
+    dishTotal: {
         type: Number
-    },
-    tax: {
-        type: Number,
     },
     category: {
         type: String,
-
     },
     desc: {
         type: String,
