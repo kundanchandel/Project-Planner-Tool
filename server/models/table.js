@@ -10,7 +10,7 @@ const tableSchema = mongoose.Schema({
     },
     order: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Orders'
+        ref: 'Order'
     }
 }, {
     timestamps: true

@@ -1,11 +1,13 @@
 const express = require('express');
 const Router = express.Router();
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
-const Restaurant = require('../models/Restaurant/restaurant');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 const isloggedin = require('../middleware/auth');
 const Order = require('../models/Order');
+const Restaurant = require('../models/Restaurant');
+const User = require('../models/User');
+
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
@@ -114,27 +116,28 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 		email: userEmail
 	})
 
+
 	if ((user.pastorders == null && user.currentorder == null) || (user.currentorder == null)) {
 		const data = req.body
-		data.currentorder.order.dish.forEach(item => {
-			let price = item.price;
-			let qty = item.quantity;
-			let total = price * qty;
-		});
 		const order = await Order.create(data)
+		console.log("*********************")
 		console.log(data.dish);
-
-		if (Array.isArray(user.currentorder)) {
-			user.currentorder.push(order._id)
-		} else {
-			user.currentorder = order._id;
-		}
+		console.log("*********************")
+		user.currentorder = order._id;
+		// if (Array.isArray(user.currentorder)) {
+		// 	user.currentorder.push(order._id)
+		// } else {
+		// 	user.currentorder = order._id;
+		// }
 		user.save()
 		res.json(order)
 	} else {
-		const data = req.body
 		const orderId = user.currentorder._id;
+		const data = req.body
 		console.log(orderId)
+		console.log("************************")
+		console.log(data.dish)
+		console.log("**********************")
 		const updatedOrder = await Order.findOneAndUpdate({
 			_id: orderId
 		}, {
@@ -148,6 +151,15 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 		console.log(updatedOrder)
 		res.json(updatedOrder)
 	}
+
+	//CALCULATE PRICE
+	const orderId = user.currentorder._id;
+	const order = await Order.findOne({
+			_id: orderId
+		})
+		.populate('dish')
+		.exec()
+	console.log(order)
 });
 
 

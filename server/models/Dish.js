@@ -13,15 +13,11 @@ const dishSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    total: {
+    dishTotal: {
         type: Number
-    },
-    tax: {
-        type: Number,
     },
     category: {
         type: String,
-
     },
     desc: {
         type: String,
@@ -29,7 +25,6 @@ const dishSchema = mongoose.Schema({
     },
     quantity: {
         type: Number,
-
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
@@ -39,4 +34,4 @@ const dishSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Dishes', dishSchema);
+module.exports = mongoose.model('Dish', dishSchema);

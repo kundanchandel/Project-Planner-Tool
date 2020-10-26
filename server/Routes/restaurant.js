@@ -2,18 +2,19 @@ const express = require('express');
 const Router = express.Router();
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
-const Restaurant = require('../models/Restaurant/restaurant');
-const Dishes = require('../models/Dish');
 const jwt = require('jsonwebtoken');
-const isloggedin = require('../middleware/auth');
-const uuid = require('uuid');
-const Dish = require('../models/Dish');
 const fetch = require('node-fetch');
+const uuid = require('uuid');
+
+const isloggedin = require('../middleware/auth');
+const Dish = require('../models/Dish');
 const Order = require('../models/Order');
+const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
+
 const {
 	deleteOne
-} = require('../models/Restaurant/restaurant');
+} = require('../models/Restaurant');
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
 
@@ -159,19 +160,23 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 		});
 		console.log(order);
 		if (req.body.isPaid === true) {
+			console.log("*************");
+
 			const user = User.findOneAndUpdate({
 				_id: order.user
 			}, {
-				$addToSet: {
+				$push: {
 					pastorders: req.params.id,
 				},
-				$set:{
+				$set: {
 					currentorder: null
 				}
 			}, {
 				new: true
 			});
-			console.log((await user)._id);
+			console.log(order.user)
+			console.log((await user));
+			res.json(user)
 		} else {
 			const user = User.findOneAndUpdate({
 				_id: order.user
@@ -182,9 +187,7 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 			}, {
 				new: true
 			});
-			console.log((await user)._id);
 		}
-		res.json(order)
 	} catch (error) {
 		res.json(error)
 	}
