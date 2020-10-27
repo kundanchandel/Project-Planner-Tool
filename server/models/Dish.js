@@ -25,7 +25,6 @@ const dishSchema = mongoose.Schema({
     },
     quantity: {
         type: Number,
-
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

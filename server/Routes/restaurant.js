@@ -1,16 +1,16 @@
-const express    = require('express');
-const Router     = express.Router();
-const bcrypt     = require('bcrypt');
-const mongoose   = require('mongoose');
-const jwt        = require('jsonwebtoken');
-const fetch      = require('node-fetch');
-const uuid       = require('uuid');
+const express = require('express');
+const Router = express.Router();
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const fetch = require('node-fetch');
+const uuid = require('uuid');
 
 const isloggedin = require('../middleware/auth');
-const Dish       = require('../models/Dish');
-const Order      = require('../models/Order');
+const Dish = require('../models/Dish');
+const Order = require('../models/Order');
 const Restaurant = require('../models/Restaurant');
-const User       = require('../models/User');
+const User = require('../models/User');
 
 const {
 	deleteOne
@@ -158,21 +158,24 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 		}, {
 			new: true
 		});
-		console.log(order);
+		//console.log(order);
 		if (req.body.isPaid === true) {
+			console.log("*************");
+			console.log(order.user)
 			const user = User.findOneAndUpdate({
 				_id: order.user
 			}, {
-				$addToSet: {
+				$push: {
 					pastorders: req.params.id,
 				},
-				$set:{
+				$set: {
 					currentorder: null
 				}
 			}, {
 				new: true
 			});
 			console.log((await user)._id);
+			res.json(user)
 		} else {
 			const user = User.findOneAndUpdate({
 				_id: order.user
@@ -183,9 +186,7 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 			}, {
 				new: true
 			});
-			console.log((await user)._id);
 		}
-		res.json(order)
 	} catch (error) {
 		res.json(error)
 	}
