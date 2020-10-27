@@ -147,9 +147,9 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 	}
 
 	//CALCULATE PRICE
-	const orderId=req.body.id;
+	const orderId=user.currentorder._id;
 	const order = await Order.findOne({
-		id: orderId
+		_id: orderId
 	})
 	.populate('dish')
 	.exec()
