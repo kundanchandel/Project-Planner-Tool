@@ -141,16 +141,14 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 		});
 		console.log(updatedOrder)
 		data.dish.forEach(async (element) => {
-
+			updatedOrder.dish.push(element);
 			let dishid = element._id;
 			const orderDishes = await Dish.findOne({
 				_id: dishid
 			});
 			let Total = orderDishes.price * element.quantity;
 
-			updatedOrder.dish.push(element);
-			console.log(dishTotal)
-			console.log(dishid)
+
 		});
 
 		updatedOrder.save();
