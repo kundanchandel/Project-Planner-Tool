@@ -161,7 +161,7 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 		//console.log(order);
 		if (req.body.isPaid === true) {
 			console.log("*************");
-
+			console.log(order.user)
 			const user = User.findOneAndUpdate({
 				_id: order.user
 			}, {
@@ -174,8 +174,7 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 			}, {
 				new: true
 			});
-			console.log(order.user)
-			console.log((await user));
+			console.log((await user)._id);
 			res.json(user)
 		} else {
 			const user = User.findOneAndUpdate({
