@@ -115,8 +115,6 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 	const user = await User.findOne({
 		email: userEmail
 	})
-
-
 	if ((user.pastorders == null && user.currentorder == null) || (user.currentorder == null)) {
 		const data = req.body
 		const order = await Order.create(data)

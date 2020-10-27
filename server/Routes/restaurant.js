@@ -158,7 +158,7 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 		}, {
 			new: true
 		});
-		console.log(order);
+		//console.log(order);
 		if (req.body.isPaid === true) {
 			console.log("*************");
 
