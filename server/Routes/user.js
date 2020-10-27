@@ -7,6 +7,7 @@ const isloggedin = require('../middleware/auth');
 const Order = require('../models/Order');
 const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
+const Dish = require('../models/Dish');
 
 
 const TOKENSECRET = 'superSecretTokenOfQDineIn'
@@ -117,49 +118,45 @@ Router.post('/restaurant/:id/order', isloggedin, async (req, res, next) => {
 	})
 
 
-	if ((user.pastorders == null && user.currentorder == null) || (user.currentorder == null)) {
+	if (user.currentorder == null) {
 		const data = req.body
 		const order = await Order.create(data)
-		console.log("*********************")
-		console.log(data.dish);
-		console.log("*********************")
 		user.currentorder = order._id;
-		// if (Array.isArray(user.currentorder)) {
-		// 	user.currentorder.push(order._id)
-		// } else {
-		// 	user.currentorder = order._id;
-		// }
+		data.dish.forEach(element => {
+			order.dish.push(element);
+			let id = element._id;
+			console.log("******************")
+			console.log(id)
+			console.log("******************")
+
+		});
 		user.save()
 		res.json(order)
 	} else {
 		const orderId = user.currentorder._id;
-		const data = req.body
-		console.log(orderId)
-		console.log("************************")
-		console.log(data.dish)
-		console.log("**********************")
-		const updatedOrder = await Order.findOneAndUpdate({
+		const data = req.body;
+		console.log(data);
+		const updatedOrder = await Order.findOne({
 			_id: orderId
-		}, {
-
-			$push: {
-				dish: data.dish
-			}
-		}, {
-			new: true
-		})
+		});
 		console.log(updatedOrder)
+		data.dish.forEach(async (element) => {
+
+			let dishid = element._id;
+			const orderDishes = await Dish.findOne({
+				_id: dishid
+			});
+			let Total = orderDishes.price * element.quantity;
+
+			updatedOrder.dish.push(element);
+			console.log(dishTotal)
+			console.log(dishid)
+		});
+
+		updatedOrder.save();
 		res.json(updatedOrder)
 	}
 
-	//CALCULATE PRICE
-	const orderId = user.currentorder._id;
-	const order = await Order.findOne({
-			_id: orderId
-		})
-		.populate('dish')
-		.exec()
-	console.log(order)
 });
 
 
