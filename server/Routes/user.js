@@ -2,6 +2,7 @@ const express = require("express");
 const Router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer');
 
 const isloggedin = require("../middleware/auth");
 const Order = require("../models/Order");
@@ -10,6 +11,7 @@ const User = require("../models/User");
 const Dish = require("../models/Dish");
 
 const TOKENSECRET = "superSecretTokenOfQDineIn";
+require('dotenv').config();
 
 Router.post("/signup", async (req, res, next) => {
   const { username, email, phoneno, password } = req.body;
@@ -112,6 +114,34 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
   const user = await User.findOne({
     email: userEmail,
   });
+
+  //MAILING
+  let testAccount =nodemailer.createTestAccount();
+    let transporter = nodemailer.createTransport({
+    service:'gmail',
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD, 
+      },
+    });
+  
+    let info =  {
+      from: process.env.EMAIL, // sender address
+      to: "nikitajain10@yahoo.com", // list of receivers
+      subject: "QDine-In", 
+      text: "Thanks for visiting us! ", 
+      html: "<b>Do visit us again...</b>", 
+    };
+  transporter.sendMail(info,(err, data)=>{
+    if(err){
+      console.log('Error occured')
+    }else{
+      console.log('Email sent successfully')
+    }
+  })
+//MAILING end
+
+
   if (user.currentorder == null) {
     const data = req.body;
     var tempDish = []
