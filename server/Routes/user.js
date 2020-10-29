@@ -2,8 +2,6 @@ const express = require("express");
 const Router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const nodemailer = require('nodemailer');
-
 const isloggedin = require("../middleware/auth");
 const Order = require("../models/Order");
 const Restaurant = require("../models/Restaurant");
@@ -67,7 +65,24 @@ Router.post("/login", async (req, res, next) => {
   );
   res.status(200).json({
     message: "Signed in successfully",
+    token
   });
+});
+
+Router.post('/resetpassword',isloggedin,async(req,res,next)=>{
+  const {oldPassword, newPassword} = req.body;
+  const userEmail = req.user.userEmail;
+  const user = await User.findOne({email:userEmail});
+  const validpass = await bcrypt.compare(oldPassword, user.password)
+  if(validpass){
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    user.save()
+    res.status(200).json(user)
+  }else{
+    res.status(200).json({err:"Incorrect old password"})
+  }
 });
 
 Router.get("/restaurant", isloggedin, async (req, res, next) => {
@@ -114,34 +129,6 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
   const user = await User.findOne({
     email: userEmail,
   });
-
-  //MAILING
-  let testAccount =nodemailer.createTestAccount();
-    let transporter = nodemailer.createTransport({
-    service:'gmail',
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD, 
-      },
-    });
-  
-    let info =  {
-      from: process.env.EMAIL, // sender address
-      to: "nikitajain10@yahoo.com", // list of receivers
-      subject: "QDine-In", 
-      text: "Thanks for visiting us! ", 
-      html: "<b>Do visit us again...</b>", 
-    };
-  transporter.sendMail(info,(err, data)=>{
-    if(err){
-      console.log('Error occured')
-    }else{
-      console.log('Email sent successfully')
-    }
-  })
-//MAILING end
-
-
   if (user.currentorder == null) {
     const data = req.body;
     var tempDish = []
