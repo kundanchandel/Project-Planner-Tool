@@ -40,7 +40,7 @@ Router.post('/signup', async (req, res, next) => {
 	const tempAdmin = await Restaurant.findOne({
 		email: email
 	});
-	if (tempAdmin) return res.status(400).send({
+	if (tempAdmin) return res.status(200).send({
 		err: 'Email Already exist'
 	});
 	const admin = await Restaurant.create(data);
