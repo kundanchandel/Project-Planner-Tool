@@ -1,4 +1,6 @@
-import "./App.css";
+// import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -12,10 +14,10 @@ import Signup from "./Components/Auth/Signup";
 import Signin from "./Components/Auth/SignIn";
 import Header from "./Components/Utils/header";
 import Sidebar from "./Components/Utils/Sidebar";
-
+import Menu from "./Components/Menu/menu";
 function App() {
   return (
-    <div>
+    <div className="container">
       <Router>
         <Header />
       </Router>
@@ -23,6 +25,7 @@ function App() {
       {localStorage.getItem("x-access-token") ? (
         <Router>
           <Sidebar />
+          <Route exact path="/menu" component={Menu} />
         </Router>
       ) : (
         <Router>

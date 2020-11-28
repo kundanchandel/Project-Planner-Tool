@@ -10,7 +10,6 @@ function isloggedin(req, res, next) {
     } else {
         const verified = jwt.verify(token, TOKENSECRET);
         req.user = verified;
-        //console.log(req.user);
         next();
     }
 }

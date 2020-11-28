@@ -7,6 +7,7 @@ import Collapse from "@material-ui/core/Collapse";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -42,21 +43,9 @@ export default function Sidebar() {
           <ListItemText primary="Order" />{" "}
         </ListItem>{" "}
         <ListItem button>
-          <ListItemText primary="Menu" />{" "}
-          {open ? <ExpandLess /> : <ExpandMore />}{" "}
-        </ListItem>{" "}
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemText primary="Menu List" />{" "}
-            </ListItem>{" "}
-            <ListItem button className={classes.nested}>
-              <ListItemText primary="Add Item" />{" "}
-            </ListItem>{" "}
-          </List>{" "}
-        </Collapse>{" "}
-        <ListItem button>
-          <ListItemText primary="Payment" />
+          <Link to="/menu">
+            <ListItemText primary="Menu" />{" "}
+          </Link>
         </ListItem>{" "}
       </List>{" "}
     </Drawer>

@@ -21,18 +21,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
+
+  const handleLogout = () => {
+    localStorage.setItem("x-access-token", "");
+    window.open("/", "_self");
+  };
   return (
-    <div>
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+    <AppBar position="fixed" className={classes.appBar}>
+      <Toolbar>
+        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton> */}
-          <Typography variant="h5" className={classes.title} noWrap>
-            Q-DineIn
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </div>
+        <Typography variant="h5" className={classes.title} noWrap>
+          Q-DineIn
+        </Typography>
+        {localStorage.getItem("x-access-token") && (
+          <Typography onClick={handleLogout}>LogOut</Typography>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 }

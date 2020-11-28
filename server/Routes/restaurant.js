@@ -62,11 +62,11 @@ Router.post('/signin', async (req, res, next) => {
 	const admin = await Restaurant.findOne({
 		email: email
 	});
-	if (!admin) return res.status(400).send({
+	if (!admin) return res.status(200).send({
 		err: "Email Not found"
 	});
 	const validpass = await bcrypt.compare(password, admin.password)
-	if (!validpass) return res.status(400).send({
+	if (!validpass) return res.status(200).send({
 		err: "Invalid password"
 	})
 	const token = await jwt.sign({
@@ -79,9 +79,9 @@ Router.post('/signin', async (req, res, next) => {
 
 //DISPLAYING ALL DISHES TO ADMIN
 Router.get("/dish", isloggedin, async (req, res, next) => {
-	const restId = req.Restaurant.id;
+	const email = req.user.adminEmail;
 	const rest = await Restaurant.findOne({
-		_id: restId
+		email
 	});
 	res.status(200).json(rest.menu);
 });

@@ -60,7 +60,6 @@ export default function SignUp() {
       alert("Incomplete Fields")
     }else{
       const data = {username,email,password,phoneno}
-      console.log(data)
       const response = await axios.post('/signup',data);
       if(response.data.token){
         localStorage.setItem("x-access-token",response.data.token)
