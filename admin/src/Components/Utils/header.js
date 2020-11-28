@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
+  menuItem:{
+    marginRight:'15px',
+    fontSize:'18px'
+  }
 }));
 
 export default function Header() {
@@ -34,9 +38,11 @@ export default function Header() {
           </IconButton> */}
         <Typography variant="h5" className={classes.title} noWrap>
           Q-DineIn
-        </Typography>
+        </Typography >
+        <Typography className={classes.menuItem} onClick={()=>{window.open('/menu','_self')}}>Menu</Typography>
+        <Typography className={classes.menuItem}>Orders</Typography>
         {localStorage.getItem("x-access-token") && (
-          <Typography onClick={handleLogout}>LogOut</Typography>
+          <Typography className={classes.menuItem} onClick={handleLogout}>Logout</Typography>
         )}
       </Toolbar>
     </AppBar>

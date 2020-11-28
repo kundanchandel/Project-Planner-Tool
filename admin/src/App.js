@@ -21,22 +21,22 @@ function App() {
       <Router>
         <Header />
       </Router>
-
-      {localStorage.getItem("x-access-token") ? (
-        <Router>
-          <Sidebar />
-          <Route exact path="/menu" component={Menu} />
-        </Router>
-      ) : (
-        <Router>
-          <Switch>
-            {/* <Route exact path="/" component={Order} /> */}
-            <Route exact path="/signup" component={Signup} />
-            <Route exact path="/signin" component={Signin} />
-            <Route path="/" component={() => <Redirect to="/signin" />} />
-          </Switch>
-        </Router>
-      )}
+      <div style={{marginTop:'70px'}}>
+        {localStorage.getItem("x-access-token") ? (
+          <Router>
+            <Route exact path="/menu" component={Menu} />
+          </Router>
+        ) : (
+          <Router>
+            <Switch>
+              {/* <Route exact path="/" component={Order} /> */}
+              <Route exact path="/signup" component={Signup} />
+              <Route exact path="/signin" component={Signin} />
+              <Route path="/" component={() => <Redirect to="/signin" />} />
+            </Switch>
+          </Router>
+        )}
+      </div>
     </div>
   );
 }

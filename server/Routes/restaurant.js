@@ -82,7 +82,7 @@ Router.get("/dish", isloggedin, async (req, res, next) => {
 	const email = req.user.adminEmail;
 	const rest = await Restaurant.findOne({
 		email
-	});
+	}).populate('menu').exec();
 	res.status(200).json(rest.menu);
 });
 
