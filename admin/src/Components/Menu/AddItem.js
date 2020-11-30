@@ -52,7 +52,7 @@ export default function ClippedDrawer(props) {
       <main className={classes.content}>
         <div component={Paper}>
           <Container maxWidth="sm">
-            <h1> Add Item </h1>{" "}
+            <h1> Add Dish to Menu </h1>{" "}
             <TextField
               placeholder="Name"
               label="Name"
@@ -85,7 +85,7 @@ export default function ClippedDrawer(props) {
             <br />
             <TextField
               placeholder="Enter Price"
-              label="Price"
+              label="Price(in ₹)"
               value={price}
               onChange={(event) => setPrice(event.target.value)}
               variant="outlined"
@@ -96,7 +96,7 @@ export default function ClippedDrawer(props) {
             <br />
             <br />
             <Button color="primary" variant="contained" onClick={onSubmit}>
-              Add Item{" "}
+              Add Dish{" "}
             </Button>{" "}
           </Container>{" "}
         </div>{" "}

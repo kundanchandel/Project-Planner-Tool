@@ -9,6 +9,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+
 export default function Menu() {
   const [menu, setmenu] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -48,9 +49,9 @@ export default function Menu() {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell >Description</TableCell>
-              <TableCell >Category</TableCell>
-              <TableCell >Price</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Category</TableCell>
+              <TableCell>Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -61,7 +62,7 @@ export default function Menu() {
                 </TableCell>
                 <TableCell >{item.desc}</TableCell>
                 <TableCell >{item.category}</TableCell>
-                <TableCell >{item.price}</TableCell>
+                <TableCell >{item.price}₹</TableCell>
               </TableRow>
             ))}
           </TableBody>

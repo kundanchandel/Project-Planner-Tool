@@ -13,13 +13,18 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    cursor:"pointer",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
   menuItem:{
     marginRight:'15px',
-    fontSize:'18px'
+    fontSize:'18px',
+    cursor: "pointer",
+  },
+  home:{
+    cursor: "pointer",
   }
 }));
 
@@ -36,7 +41,7 @@ export default function Header() {
         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton> */}
-        <Typography variant="h5" className={classes.title} noWrap>
+        <Typography variant="h5" className={classes.title} noWrap onClick={()=>{window.open('/home','_self')}}>
           Q-DineIn
         </Typography >
         <Typography className={classes.menuItem} onClick={()=>{window.open('/menu','_self')}}>Menu</Typography>
