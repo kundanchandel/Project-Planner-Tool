@@ -57,12 +57,12 @@ Router.post("/login", async (req, res, next) => {
 		email: email,
 	});
 	if (!user)
-		return res.status(400).send({
+		return res.status(200).send({
 			err: "Email Not found",
 		});
 	const validpass = await bcrypt.compare(password, user.password);
 	if (!validpass)
-		return res.status(400).send({
+		return res.status(200).send({
 			err: "Invalid password",
 		});
 	const token = await jwt.sign({

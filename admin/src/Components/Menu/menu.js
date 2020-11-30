@@ -46,7 +46,7 @@ export default function Menu() {
 
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+          <TableHead style={{fontWeight:"bold"}}>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Description</TableCell>
