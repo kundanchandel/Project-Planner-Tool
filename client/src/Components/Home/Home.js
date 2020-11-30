@@ -27,9 +27,19 @@ export default function Home() {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Contact No.</TableCell>
-              <TableCell>Email</TableCell>
+              <TableCell>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>Name</p>
+              </TableCell>
+              <TableCell>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
+                  Contact No.
+                </p>
+              </TableCell>
+              <TableCell>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
+                  E-mail ID
+                </p>
+              </TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -42,7 +52,23 @@ export default function Home() {
                 <TableCell>{restaurant.phoneno}</TableCell>
                 <TableCell>{restaurant.email}</TableCell>
                 <TableCell>
-                  {<Link to={`/rest/${restaurant._id}`}> -></Link>}
+                  {
+                    <Link
+                      to={`/rest/${restaurant._id}`}
+                      style={{
+                        textDecoration: "none",
+                        border: "1px solid #3f51b5",
+                        borderRadius: "5px",
+                        padding: "5px",
+                        backgroundColor: "#3f51b5",
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      View Menu
+                    </Link>
+                  }
                 </TableCell>
               </TableRow>
             ))}

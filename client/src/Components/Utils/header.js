@@ -10,10 +10,12 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    cursor:"pointer",
   },
   menuItem: {
     marginRight: "15px",
     fontSize: "18px",
+    cursor:"pointer",
   },
 }));
 
