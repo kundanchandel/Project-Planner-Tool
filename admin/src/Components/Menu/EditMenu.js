@@ -48,7 +48,7 @@ export default function EditMenu(props) {
       <main className={classes.content}>
         <div component={Paper}>
           <Container maxWidth="sm">
-            <h1> Edit Item </h1>{" "}
+            <h1> Edit Dish in Menu</h1>{" "}
             <TextField
               placeholder="Name"
               label="Name"
@@ -92,7 +92,7 @@ export default function EditMenu(props) {
             <br />
             <br />
             <Button color="primary" variant="contained" onClick={onSubmit}>
-              Edit Item{" "}
+              OK{" "}
             </Button>{" "}
           </Container>{" "}
         </div>{" "}

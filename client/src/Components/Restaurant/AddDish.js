@@ -16,7 +16,18 @@ const useStyles = makeStyles({
 export default function AddDish(props) {
   const classes = useStyles();
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const handelCancel = () => {
+    props.handleClose();
+  };
+  const handleAdd = () => {
+    var cart = localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart"))
+      : [];
+    cart.push({ dish: props.dish, quantity });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    handelCancel();
+  };
   return (
     <div>
       <Card>
@@ -27,15 +38,20 @@ export default function AddDish(props) {
             title="Contemplative Reptile"
           />
           <CardContent>
-            <div style={{ display: "flex", justifyContent: "space-between",marginTop:"5px" }}>
-              <Typography gutterBottom variant="h5" component="h2" >
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography gutterBottom variant="h5" component="h2" style={{}}>
                 {props.dish.name}
               </Typography>
               <Typography gutterBottom variant="h6" component="h2">
-                {props.dish.price}/-
+                ₹{props.dish.price}/-
               </Typography>
             </div>
-            <Typography variant="h6" color="textSecondary" component="h2">
+            <Typography
+              variant="h6"
+              color="textSecondary"
+              component="h2"
+              style={{ marginBottom: "10px", fontSize: "1em" }}
+            >
               {props.dish.desc}
             </Typography>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -53,17 +69,17 @@ export default function AddDish(props) {
                 }}
               />
               <Typography variant="h6" color="textSecondary" component="h2">
-                Total: {quantity * props.dish.price}
+                Total: ₹{quantity * props.dish.price}
               </Typography>
             </div>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
-            Share
+          <Button size="small" color="primary" onClick={handleAdd}>
+            Add
           </Button>
-          <Button size="small" color="primary">
-            Learn More
+          <Button size="small" color="primary" onClick={handelCancel}>
+            Cancel
           </Button>
         </CardActions>
       </Card>

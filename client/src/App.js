@@ -12,6 +12,8 @@ import SignIn from "./Components/Auth/SignIn";
 import SignUp from "./Components/Auth/SignUp";
 import Header from "./Components/Utils/header";
 import Restaurant from "./Components/Restaurant/Restaurant";
+import Cart from "./Components/Cart/Cart";
+
 function App() {
   return (
     <div>
@@ -20,11 +22,12 @@ function App() {
           <Header />
         </Router>
       </div>
-      <div className="container" style={{ margin: "50px", marginTop:'100px' }}>
+      <div className="container" style={{ margin: "50px", marginTop: "100px" }}>
         {localStorage.getItem("x-access-token") ? (
           <Router>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/cart" component={Cart} />
               <Route exact path="/rest/:id" component={Restaurant} />
             </Switch>
           </Router>

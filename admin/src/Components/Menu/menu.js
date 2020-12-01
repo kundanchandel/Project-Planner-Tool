@@ -13,7 +13,6 @@ import { AiOutlineMenu, AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Button from "@material-ui/core/Button";
 import EditMenu from "./EditMenu";
-import { Box, Typography } from "@material-ui/core";
 
 export default function Menu() {
   const [menu, setmenu] = useState([]);
@@ -81,10 +80,26 @@ export default function Menu() {
               <TableCell>
                 <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>Name</p>
               </TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
+                  Description
+                </p>
+              </TableCell>
+              <TableCell>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
+                  Category
+                </p>
+              </TableCell>
+              <TableCell>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
+                  Price
+                </p>
+              </TableCell>
+              <TableCell>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
+                  Actions
+                </p>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -95,11 +110,13 @@ export default function Menu() {
                 </TableCell>
                 <TableCell>{item.desc}</TableCell>
                 <TableCell>{item.category}</TableCell>
-                <TableCell>{item.price}</TableCell>
+                <TableCell>₹{item.price}</TableCell>
                 <TableCell>
-                  <ContextMenuTrigger id={item._id} holdToDisplay={0}>
-                    <AiOutlineMenu />
-                  </ContextMenuTrigger>
+                  <p style={{ textAlign: "center", cursor: "pointer" }}>
+                    <ContextMenuTrigger id={item._id} holdToDisplay={0}>
+                      <AiOutlineMenu />
+                    </ContextMenuTrigger>
+                  </p>
                   <ContextMenu
                     id={item._id}
                     style={{ backgroundColor: "#f5f5f5" }}
@@ -175,6 +192,18 @@ export default function Menu() {
             padding: "10px",
           }}
         >
+          <div
+            style={{
+              float: "right",
+              fontSize: "24px",
+              fontWeight: "bolder",
+              margin: "5px",
+              cursor: "pointer",
+            }}
+            onClick={handleClose}
+          >
+            X
+          </div>
           <EditMenu
             data={editData}
             updateData={updateData}

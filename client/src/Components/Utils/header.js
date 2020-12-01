@@ -10,10 +10,12 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    cursor: "pointer",
   },
   menuItem: {
     marginRight: "15px",
     fontSize: "18px",
+    cursor: "pointer",
   },
 }));
 
@@ -36,7 +38,14 @@ export default function Header() {
 
         {localStorage.getItem("x-access-token") && (
           <div style={{ display: "flex" }}>
-            <Typography className={classes.menuItem}>Orders</Typography>
+            <Typography
+              className={classes.menuItem}
+              onClick={() => {
+                window.open("/cart", "_self");
+              }}
+            >
+              Your Cart
+            </Typography>
             <Typography className={classes.menuItem} onClick={handleLogout}>
               Logout
             </Typography>
