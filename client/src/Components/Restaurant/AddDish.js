@@ -27,8 +27,8 @@ export default function AddDish(props) {
             title="Contemplative Reptile"
           />
           <CardContent>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography gutterBottom variant="h5" component="h2" style={{marginTop:"50px"}}>
+            <div style={{ display: "flex", justifyContent: "space-between",marginTop:"5px" }}>
+              <Typography gutterBottom variant="h5" component="h2" >
                 {props.dish.name}
               </Typography>
               <Typography gutterBottom variant="h6" component="h2">
