@@ -193,6 +193,11 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 
 });
 
+// GET ALL ORDERS
+Router.get('/orders', isloggedin, async (req, res, next) => {
+	const order = await Order.find();
+	res.json(order);
 
+})
 
 module.exports = Router;
