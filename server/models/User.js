@@ -20,9 +20,14 @@ const userSchema = mongoose.Schema({
     currentorder: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order"
+    },
+    currentRestId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Restaurant"
     }
-},{
-    timestamps:true
+
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('User', userSchema);

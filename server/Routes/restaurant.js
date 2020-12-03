@@ -46,6 +46,7 @@ Router.post('/signup', async (req, res, next) => {
 	const admin = await Restaurant.create(data);
 	admin.save()
 	const token = await jwt.sign({
+		id: admin._id,
 		adminEmail: admin.email
 	}, TOKENSECRET);
 	res.status(200).send({
@@ -70,6 +71,7 @@ Router.post('/signin', async (req, res, next) => {
 		err: "Invalid password"
 	})
 	const token = await jwt.sign({
+		id: admin._id,
 		adminEmail: admin.email
 	}, TOKENSECRET);
 	res.status(200).send({
@@ -83,6 +85,7 @@ Router.get("/dish", isloggedin, async (req, res, next) => {
 	const rest = await Restaurant.findOne({
 		email
 	}).populate('menu').exec();
+
 	res.status(200).json(rest.menu);
 });
 
@@ -137,9 +140,10 @@ Router.put('/dish/:dishid', isloggedin, async (req, res, next) => {
 	res.json(dish)
 });
 
-//
+//GET ALL DISHES
 Router.get('/', isloggedin, async (req, res, next) => {
-	const restEmail = req.user.adminEmail
+	const restEmail = req.user.adminEmail;
+	console.log(restEmail);
 	const rest = await Restaurant.findOne({
 		email: restEmail
 	}).populate('menu').exec()
@@ -169,12 +173,14 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 					pastorders: req.params.id,
 				},
 				$set: {
-					currentorder: null
+					currentorder: null,
+					currentRestId: null
 				}
 			}, {
 				new: true
 			});
 			console.log((await user)._id);
+			console.log((await user).currentRestId);
 			res.json(user)
 		} else {
 			const user = User.findOneAndUpdate({
@@ -195,9 +201,16 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 
 // GET ALL ORDERS
 Router.get('/orders', isloggedin, async (req, res, next) => {
-	const order = await Order.find();
-	res.json(order);
-
+	const restId = req.user.id;
+	const rest = Restaurant.findOne({
+		_id: restId
+	});
+	const rid = (await rest)._id;
+	console.log(rid);
+	const order = await Order.findOne({
+		restaurant: rid
+	});
+	console.log(order);
 });
 
 module.exports = Router;

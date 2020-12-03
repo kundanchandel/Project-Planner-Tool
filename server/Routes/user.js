@@ -214,9 +214,15 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
 			user: user._id,
 			orderTotal: orderTotal,
 		});
+		// const md = Object.assign({}, {
+		// 	...data,
+		// 	restId: req.params.id
+		// })
 		user.currentorder = order._id;
+		user.currentRestId = req.params.id;
 		user.save();
-		console.log(order, user);
+		console.log(order);
+		console.log(user);
 		res.send(order);
 	} else {
 		const orderId = user.currentorder._id;
@@ -245,14 +251,16 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
 	}
 });
 
-Router.get('/order',isloggedin,async(req,res,next)=>{
+Router.get('/order', isloggedin, async (req, res, next) => {
 	const userEmail = req.user.userEmail;
 	const user = await User.findOne({
 		email: userEmail,
 	});
-	if(user.currentorder == null){
-		return res.status(200).send({data:[]});
-	}else{
+	if (user.currentorder == null) {
+		return res.status(200).send({
+			data: []
+		});
+	} else {
 		const orderId = user.currentorder._id;
 		var updatedOrder = await Order.findOne({
 			_id: orderId,
@@ -260,5 +268,7 @@ Router.get('/order',isloggedin,async(req,res,next)=>{
 		res.json(updatedOrder);
 	}
 });
+
+
 
 module.exports = Router;
