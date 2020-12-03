@@ -213,10 +213,12 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
 			dish: tempDish,
 			user: user._id,
 			orderTotal: orderTotal,
+			restId:req.body.restId
 		});
 		user.currentorder = order._id;
+		user.currentRest = req.body.restId;
 		user.save();
-		console.log(order, user);
+		// console.log(order, user);
 		res.send(order);
 	} else {
 		const orderId = user.currentorder._id;
