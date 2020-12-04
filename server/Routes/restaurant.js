@@ -141,7 +141,7 @@ Router.put("/dish/:dishid", isloggedin, async (req, res, next) => {
 //GET ALL DISHES
 Router.get('/', isloggedin, async (req, res, next) => {
 	const restEmail = req.user.adminEmail;
-	console.log(restEmail);
+	// console.log(restEmail);
 	const rest = await Restaurant.findOne({
 		email: restEmail
 	}).populate('menu').exec()
@@ -160,11 +160,9 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 		}, {
 			new: true
 		});
-		//console.log(order);
+		console.log(order);
 		if (req.body.isPaid === true) {
-			console.log("*************");
-			console.log(order.user)
-			const user = User.findOneAndUpdate({
+			const user = await User.findOneAndUpdate({
 				_id: order.user
 			}, {
 				$push: {
@@ -177,8 +175,7 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 			}, {
 				new: true
 			});
-			console.log((await user)._id);
-			console.log((await user).currentRestId);
+			console.log(user);
 			res.json(user)
 		} else {
 			const user = User.findOneAndUpdate({
@@ -200,15 +197,17 @@ Router.put('/order/:id', isloggedin, async (req, res, next) => {
 // GET ALL ORDERS
 Router.get('/orders', isloggedin, async (req, res, next) => {
 	const restId = req.user.id;
-	const rest = Restaurant.findOne({
-		_id: restId
+
+	var orders = [];
+	(await Order.find()).map(order => {
+		console.log(order.restaurant);
+		if (restId == order.restaurant) {
+			orders.push(order);
+		}
 	});
-	const rid = (await rest)._id;
-	console.log(rid);
-	const order = await Order.findOne({
-		restaurant: rid
-	});
-	console.log(order);
+
+	res.json(orders)
+
 });
 
 module.exports = Router;

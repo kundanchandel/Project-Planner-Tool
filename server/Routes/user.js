@@ -191,6 +191,7 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
 	const user = await User.findOne({
 		email: userEmail,
 	});
+	const restId = req.params.id;
 	if (user.currentorder == null) {
 		const data = req.body;
 		var tempDish = [];
@@ -213,7 +214,7 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
 			dish: tempDish,
 			user: user._id,
 			orderTotal: orderTotal,
-			restId: req.body.restId
+			restaurant: restId
 		});
 		// const md = Object.assign({}, {
 		// 	...data,
@@ -222,17 +223,18 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
 		user.currentorder = order._id;
 		user.currentRestId = req.params.id;
 		user.save();
+		// order.save();
 		console.log(order);
 		console.log(user);
 		res.send(order);
 	} else {
 		const orderId = user.currentorder._id;
 		const data = req.body;
-		var updatedOrder = await Order.findOne({
+		const updatedOrder = await Order.findOne({
 			_id: orderId,
 		});
-		var orderTotal = updatedOrder.orderTotal;
-		for (var i = 0; i < data.dish.length; i++) {
+		let orderTotal = updatedOrder.orderTotal;
+		for (let i = 0; i < data.dish.length; i++) {
 			let dishid = data.dish[i]._id;
 			const orderDishes = await Dish.findOne({
 				_id: dishid,
