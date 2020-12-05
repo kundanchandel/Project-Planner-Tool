@@ -16,7 +16,7 @@ export default function Home() {
 
   const getData = async () => {
     const response = await axios.get("/restaurant");
-
+    console.log(response);
     if (response.data) {
       setRestaurants(response.data);
     }

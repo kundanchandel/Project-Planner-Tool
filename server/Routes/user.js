@@ -8,6 +8,9 @@ const Restaurant = require("../models/Restaurant");
 const User = require("../models/User");
 const Dish = require("../models/Dish");
 const mail = require("../utils/mail");
+const {
+	find
+} = require("../models/Dish");
 
 const TOKENSECRET = "superSecretTokenOfQDineIn";
 require("dotenv").config();
@@ -34,7 +37,7 @@ Router.post("/signup", async (req, res, next) => {
 		email: email,
 	});
 	if (tempUser)
-		return res.status(400).send({
+		return res.status(200).send({
 			err: "Email Already exist",
 		});
 	const user = await User.create(data);
@@ -178,16 +181,20 @@ Router.get("/restaurant", isloggedin, async (req, res, next) => {
 		const user = await User.findOne({
 			_id: req.user.id
 		});
-		if (user.currentRestId === null) {
-			const restaurant = await Restaurant.find();
-			res.json(restaurant);
+		if (user.currentRestId == null || user.currentRestId == "") {
+			const response = await Restaurant.find();
+			res.json(response);
 		} else {
-			res.redirect(`/restaurant/:${user.currentRestId}`);
+			const response = await Restaurant.find({
+				_id: user.currentRestId
+			});
+			res.json(response);
+
 		}
 
-
 	} catch (err) {
-		res.json({
+		console.log(err);
+		res.status(200).json({
 			message: "You can't be here",
 		});
 	}
