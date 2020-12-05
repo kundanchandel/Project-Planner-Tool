@@ -27,7 +27,9 @@ export default function Cart() {
 
   const getData = async () => {
     const response = await axios.get("/order");
-    setOrders(response.data);
+    if (response.data) {
+      setOrders(response.data);
+    }
   };
   const handleRemoveFromCart = (idx) => {
     cart.splice(idx, 1);
@@ -42,6 +44,7 @@ export default function Cart() {
       dish.push({ _id: item.dish._id, quantity: item.quantity });
     });
     const response = await axios.post(`/restaurant/${restId}/order`, { dish });
+    console.log(response);
     if (response) {
       localStorage.setItem("cart", "");
       window.location.reload();
@@ -101,32 +104,36 @@ export default function Cart() {
           </div>
         </div>
       )}
-
-      <h1>Orders</h1>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Price per plate</TableCell>
-            <TableCell>Quantity</TableCell>
-            <TableCell>Dish Total</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders.dish &&
-            orders.dish.map((dish) => {
-              return (
-                <TableRow key={dish._id}>
-                  <TableCell>{dish.orderDishes.name}</TableCell>
-                  <TableCell>{dish.orderDishes.price}</TableCell>
-                  <TableCell>{dish.qnt}</TableCell>
-                  <TableCell>{dish.total}</TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-      <div>Orders total: {orders.orderTotal}</div>
+      {orders.dish ? (
+        <div>
+          <h1>Orders</h1>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Price per plate</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Dish Total</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {orders.dish.map((dish) => {
+                return (
+                  <TableRow key={dish._id}>
+                    <TableCell>{dish.orderDishes.name}</TableCell>
+                    <TableCell>{dish.orderDishes.price}</TableCell>
+                    <TableCell>{dish.qnt}</TableCell>
+                    <TableCell>{dish.total}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <div>Orders total: {orders.orderTotal}</div>
+        </div>
+      ) : (
+        <h1>No Orders</h1>
+      )}
     </div>
   );
 }

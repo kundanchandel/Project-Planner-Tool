@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import axios from "../../services/Axios";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -50,6 +51,7 @@ export default function SignIn() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [open, setOpen] = React.useState(false);
   const handelSubmit = async (e) => {
     e.preventDefault();
     if (email == "" || password == "") {
@@ -58,12 +60,25 @@ export default function SignIn() {
       const data = { email, password };
       const response = await axios.post("/login", data);
       if (response.data.token) {
-        console.log(response)
+        console.log(response);
         localStorage.setItem("x-access-token", response.data.token);
         window.open("/", "_self");
       } else {
         alert("Invalid Email or Password");
       }
+    }
+  };
+
+  const handleForgotCLick = async () => {
+    if (email != "") {
+      const response = await axios.post("/forgotpassword", { email });
+      if (response.data.err) {
+        window.alert(response.data.err);
+      } else {
+        window.alert("An email has been sent to given mail Id");
+      }
+    } else {
+      window.alert("Email field is required!!!");
     }
   };
 
@@ -121,10 +136,15 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container justify="space-between">
             <Grid item>
               <Link href="/SignUp" variant="body2">
                 Don't have an account? Sign up
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link variant="body2" onClick={handleForgotCLick}>
+                forgot password
               </Link>
             </Grid>
           </Grid>
