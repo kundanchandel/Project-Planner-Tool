@@ -45,7 +45,7 @@ export default function Header() {
           Q-DineIn
         </Typography >
         <Typography className={classes.menuItem} onClick={()=>{window.open('/menu','_self')}}>Menu</Typography>
-        <Typography className={classes.menuItem}>Orders</Typography>
+        <Typography className={classes.menuItem} onClick={()=>{window.open('/order',"_self")}}>Orders</Typography>
         {localStorage.getItem("x-access-token") && (
           <Typography className={classes.menuItem} onClick={handleLogout}>Logout</Typography>
         )}

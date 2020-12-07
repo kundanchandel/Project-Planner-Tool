@@ -15,16 +15,18 @@ import Signin from "./Components/Auth/SignIn";
 import Header from "./Components/Utils/header";
 import Sidebar from "./Components/Utils/Sidebar";
 import Menu from "./Components/Menu/menu";
+import Order from "./Components/Order/Order";
 function App() {
   return (
     <div className="container">
       <Router>
         <Header />
       </Router>
-      <div style={{marginTop:'70px'}}>
+      <div style={{ marginTop: "70px" }}>
         {localStorage.getItem("x-access-token") ? (
           <Router>
             <Route exact path="/menu" component={Menu} />
+            <Route exact path="/order" component={Order} />
           </Router>
         ) : (
           <Router>
