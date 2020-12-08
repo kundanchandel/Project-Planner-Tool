@@ -13,19 +13,19 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    cursor:"pointer",
+    cursor: "pointer",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
-  menuItem:{
-    marginRight:'15px',
-    fontSize:'18px',
+  menuItem: {
+    marginRight: "15px",
+    fontSize: "18px",
     cursor: "pointer",
   },
-  home:{
+  home: {
     cursor: "pointer",
-  }
+  },
 }));
 
 export default function Header() {
@@ -41,13 +41,36 @@ export default function Header() {
         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton> */}
-        <Typography variant="h5" className={classes.title} noWrap onClick={()=>{window.open('/home','_self')}}>
+        <Typography
+          variant="h5"
+          className={classes.title}
+          noWrap
+          onClick={() => {
+            window.open("/order", "_self");
+          }}
+        >
           Q-DineIn
-        </Typography >
-        <Typography className={classes.menuItem} onClick={()=>{window.open('/menu','_self')}}>Menu</Typography>
-        <Typography className={classes.menuItem} onClick={()=>{window.open('/order',"_self")}}>Orders</Typography>
+        </Typography>
+        <Typography
+          className={classes.menuItem}
+          onClick={() => {
+            window.open("/menu", "_self");
+          }}
+        >
+          Menu
+        </Typography>
+        <Typography
+          className={classes.menuItem}
+          onClick={() => {
+            window.open("/order", "_self");
+          }}
+        >
+          Orders
+        </Typography>
         {localStorage.getItem("x-access-token") && (
-          <Typography className={classes.menuItem} onClick={handleLogout}>Logout</Typography>
+          <Typography className={classes.menuItem} onClick={handleLogout}>
+            Logout
+          </Typography>
         )}
       </Toolbar>
     </AppBar>

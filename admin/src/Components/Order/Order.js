@@ -8,17 +8,28 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
+// import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 import axios from "../../services/Axios";
 
+const handleMarkPaid = async (orderId) => {
+  const confirm = window.confirm("Are you sure, you want to make it as paid!");
+  if (confirm) {
+    const response = await axios.put(`order/${orderId}`, { isPaid: true });
+    window.location.reload();
+  }
+};
 const Row = (props) => {
-  const order = props.order;
+  const { order } = props;
   const [open, setOpen] = useState(false);
   //   console.log("hello");
+
   return (
     <React.Fragment>
       <TableRow style={{ borderBottom: "unset" }}>
@@ -33,8 +44,15 @@ const Row = (props) => {
         </TableCell>
         <TableCell>{order._id}</TableCell>
         <TableCell>{order.orderTotal}</TableCell>
-        <TableCell>{order.isPaid ? "True" : "False"}</TableCell>
         <TableCell>{order.updatedAt}</TableCell>
+        {console.log(order.isPaid)}
+        {order.isPaid == false && (
+          <TableCell onClick={() => handleMarkPaid(order._id)}>
+            <Button variant="outlined" color="secondary">
+              Mark as paid!
+            </Button>
+          </TableCell>
+        )}
       </TableRow>
       <TableRow>
         <TableCell
@@ -49,19 +67,6 @@ const Row = (props) => {
             style={{ backgroundColor: "#e5ebea" }}
           >
             <Box>
-              {/* <Typography
-                variant="h5"
-                component="div"
-                style={{
-                  textAlign: "center",
-                  //   backgroundColor: "#3f51b5",
-                  fontWeight: "bolder",
-                  //   color: "white",
-                  //   borderBottom: "1px solid white",
-                }}
-              >
-                Order Details
-              </Typography> */}
               <Table size="small">
                 <TableHead
                   style={{
@@ -104,49 +109,96 @@ const Row = (props) => {
 
 export default function Order() {
   const [data, setData] = useState([]);
+  const [unFilteredData, setUnFilteredData] = useState([]);
+  const [value, setValue] = React.useState("unPaid");
+
+  const handleFilter = (status) => {
+    if (status == "unPaid" && value !== "unPaid") {
+      var tempData = unFilteredData.filter((order) => {
+        return !order.isPaid;
+      });
+      setData(tempData);
+      setValue("unPaid");
+    } else if (status == "paid" && value !== "paid") {
+      var tempData = unFilteredData.filter((order) => {
+        return order.isPaid;
+      });
+      setData(tempData);
+      setValue("paid");
+    }
+  };
+
   useEffect(() => {
     getData();
   }, []);
 
   const getData = async () => {
     const response = await axios.get("/orders");
-    setData(response.data);
+    setUnFilteredData(response.data);
+    var tempData = response.data.filter((order) => {
+      return !order.isPaid;
+    });
+    setData(tempData);
     //     console.log(data);
   };
   return (
-    <TableContainer class="container-fluid">
-      <Table aria-label="collapsible table">
-        <TableHead
-          style={{
-            backgroundColor: "#27272b",
-          }}
-        >
-          <TableRow>
-            <TableCell
-              style={{ color: "white", fontWeight: "bolder" }}
-            ></TableCell>
-            <TableCell style={{ color: "white", fontWeight: "bolder" }}>
-              Table No
-            </TableCell>
-            <TableCell style={{ color: "white", fontWeight: "bolder" }}>
-              Order Total
-            </TableCell>
-            <TableCell style={{ color: "white", fontWeight: "bolder" }}>
-              isPAid
-            </TableCell>
-            <TableCell style={{ color: "white", fontWeight: "bolder" }}>
-              Date
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.length &&
-            data.map((order) => {
-              //       console.log(order, " hello");
-              return <Row order={order} />;
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <Paper className="m-2">
+        <Tabs indicatorColor="primary" textColor="primary" variant="fullWidth">
+          <Tab
+            label="Current Orders"
+            onClick={() => {
+              handleFilter("unPaid");
+            }}
+            style={
+              value == "unPaid" ? { borderBottom: "2px solid #3f51b5" } : {}
+            }
+          />
+          <Tab
+            label="Past Orders"
+            onClick={() => {
+              handleFilter("paid");
+            }}
+            style={value == "paid" ? { borderBottom: "2px solid #3f51b5" } : {}}
+          />
+        </Tabs>
+      </Paper>
+      <TableContainer class="container-fluid">
+        <Table aria-label="collapsible table">
+          <TableHead
+            style={{
+              backgroundColor: "#27272b",
+            }}
+          >
+            <TableRow>
+              <TableCell
+                style={{ color: "white", fontWeight: "bolder" }}
+              ></TableCell>
+              <TableCell style={{ color: "white", fontWeight: "bolder" }}>
+                Table No
+              </TableCell>
+              <TableCell style={{ color: "white", fontWeight: "bolder" }}>
+                Order Total
+              </TableCell>
+              <TableCell style={{ color: "white", fontWeight: "bolder" }}>
+                Date
+              </TableCell>
+              {value == "unPaid" && (
+                <TableCell
+                  style={{ color: "white", fontWeight: "bolder" }}
+                ></TableCell>
+              )}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.length &&
+              data.map((order) => {
+                //       console.log(order, " hello");
+                return <Row order={order} />;
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

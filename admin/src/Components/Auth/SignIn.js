@@ -60,7 +60,7 @@ export default function SignUp() {
       if (response.data.token) {
         console.log(response)
         localStorage.setItem("x-access-token", response.data.token);
-        window.open("/", "_self");
+        window.open("/order", "_self");
       } else {
         alert("Invalid Email or Password");
       }
