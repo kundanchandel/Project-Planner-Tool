@@ -44,7 +44,7 @@ export default function Header() {
                 window.open("/cart", "_self");
               }}
             >
-              Your Cart
+              My Cart
             </Typography>
             <Typography className={classes.menuItem} onClick={handleLogout}>
               Logout

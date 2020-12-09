@@ -22,6 +22,7 @@ export default function EditMenu(props) {
   const [price, setPrice] = useState(props.data.price);
   const [desc, setDescription] = useState(props.data.desc);
   const [category, setCategory] = useState(props.data.category);
+  const [image, setImage] = useState(props.data.image);
   const onSubmit = async (e) => {
     e.preventDefault();
     const data = {
@@ -29,6 +30,7 @@ export default function EditMenu(props) {
       desc,
       price,
       category,
+      image
     };
     const response = await axios.put(`/dish/${props.data._id}`, data);
 //     console.log(response);
@@ -38,6 +40,7 @@ export default function EditMenu(props) {
       setPrice(0);
       setDescription("");
       setCategory("");
+      setImage("");
       props.updateData(response.data);
     }
 
@@ -48,7 +51,7 @@ export default function EditMenu(props) {
       <main className={classes.content}>
         <div component={Paper}>
           <Container maxWidth="sm">
-            <h1> Edit Dish in Menu</h1>{" "}
+            <h1> Edit Dish Details</h1>{" "}
             <TextField
               placeholder="Name"
               label="Name"
@@ -80,15 +83,24 @@ export default function EditMenu(props) {
             />
             <br />
             <TextField
+              placeholder="Dish Image"
+              label="Dish Image"
+              value={image}
+              onChange={(event) => setImage(event.target.value)}
+              variant="outlined"
+              margin="normal"
+              fullWidth="true"
+            />
+            <br />
+            <TextField
               placeholder="Enter Price"
-              label="Price"
+              label="Price(in ₹)"
               value={price}
               onChange={(event) => setPrice(event.target.value)}
               variant="outlined"
               margin="normal"
               fullWidth="true"
             />
-            <br />
             <br />
             <br />
             <Button color="primary" variant="contained" onClick={onSubmit}>

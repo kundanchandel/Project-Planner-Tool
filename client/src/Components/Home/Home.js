@@ -28,7 +28,7 @@ export default function Home() {
           <TableHead>
             <TableRow>
               <TableCell>
-                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>Name</p>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>Restaurant Name</p>
               </TableCell>
               <TableCell>
                 <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>

@@ -43,8 +43,9 @@ const Row = (props) => {
           </IconButton>
         </TableCell>
         <TableCell>{order._id}</TableCell>
-        <TableCell>{order.orderTotal}</TableCell>
-        <TableCell>{order.updatedAt}</TableCell>
+        <TableCell>₹{order.orderTotal}</TableCell>
+        <TableCell>{order.updatedAt}
+        </TableCell>
         {console.log(order.isPaid)}
         {order.isPaid == false && (
           <TableCell onClick={() => handleMarkPaid(order._id)}>
@@ -79,7 +80,7 @@ const Row = (props) => {
                     <TableCell />
                     <TableCell style={{ color: "white" }}>Name</TableCell>
                     <TableCell style={{ color: "white" }}>Category</TableCell>
-                    <TableCell style={{ color: "white" }}> Price</TableCell>
+                    <TableCell style={{ color: "white" }}>Price</TableCell>
                     <TableCell style={{ color: "white" }}>Quantity</TableCell>
                     <TableCell style={{ color: "white" }}>Total</TableCell>
                   </TableRow>
@@ -91,9 +92,9 @@ const Row = (props) => {
                         <TableCell />
                         <TableCell>{dish.orderDishes.name}</TableCell>
                         <TableCell>{dish.orderDishes.category}</TableCell>
-                        <TableCell>{dish.orderDishes.price}</TableCell>
+                        <TableCell>₹{dish.orderDishes.price}</TableCell>
                         <TableCell>{dish.qnt}</TableCell>
-                        <TableCell>{dish.total}</TableCell>
+                        <TableCell>₹{dish.total}</TableCell>
                       </TableRow>
                     );
                   })}

@@ -78,7 +78,7 @@ export default function Restaurant(props) {
                   <img
                     className={classes.img}
                     alt="complex"
-                    src="https://th.bing.com/th/id/OIP.ZMGnz9qTvFn5Kfm5Hes_HwHaHa?w=211&h=211&c=7&o=5&dpr=1.25&pid=1.7"
+                    src={dish.image}
                   />
                 </ButtonBase>
               </Grid>

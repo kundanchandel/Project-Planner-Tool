@@ -25,6 +25,7 @@ export default function ClippedDrawer(props) {
   const [price, setPrice] = useState(0);
   const [desc, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +34,7 @@ export default function ClippedDrawer(props) {
       desc,
       price,
       category,
+      image
     };
     const response = await axios.post("/dish", data);
     if (response) {
@@ -41,6 +43,7 @@ export default function ClippedDrawer(props) {
       setPrice(0);
       setDescription("");
       setCategory("");
+      setImage("");
       props.pushData(response.data);
     }
     //     console.log(resposne);
@@ -83,6 +86,16 @@ export default function ClippedDrawer(props) {
               fullWidth="true"
             />
             <br />
+            <TextField
+              placeholder="Dish Image"
+              label="Dish Image"
+              value={image}
+              onChange={(event) => setImage(event.target.value)}
+              variant="outlined"
+              margin="normal"
+              fullWidth="true"
+            />
+            <br/>
             <TextField
               placeholder="Enter Price"
               label="Price(in ₹)"

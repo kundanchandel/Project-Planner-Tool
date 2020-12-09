@@ -13,7 +13,7 @@ import { AiOutlineMenu, AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import Button from "@material-ui/core/Button";
 import EditMenu from "./EditMenu";
-
+import CancelIcon from '@material-ui/icons/Cancel';
 export default function Menu() {
   const [menu, setmenu] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -70,7 +70,16 @@ export default function Menu() {
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
+      <button type="button" onClick={handleOpen}
+      style={{
+        textDecoration: "none",
+        border: "1px solid #3f51b5",
+        borderRadius: "5px",
+        padding: "5px",
+        backgroundColor: "#3f51b5",
+        color: "white",
+        fontWeight: "bold",
+      }}>
         Add Dish
       </button>
       <TableContainer component={Paper}>
@@ -97,7 +106,7 @@ export default function Menu() {
               </TableCell>
               <TableCell>
                 <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
-                  Actions
+                  Edit/Delete
                 </p>
               </TableCell>
             </TableRow>
@@ -176,7 +185,7 @@ export default function Menu() {
             }}
             onClick={handleClose}
           >
-            X
+            <CancelIcon/>
           </div>
           <AddItem pushData={pushData} handleClose={handleClose} />
         </div>
@@ -193,16 +202,9 @@ export default function Menu() {
           }}
         >
           <div
-            style={{
-              float: "right",
-              fontSize: "24px",
-              fontWeight: "bolder",
-              margin: "5px",
-              cursor: "pointer",
-            }}
             onClick={handleClose}
           >
-            X
+            <CancelIcon/>
           </div>
           <EditMenu
             data={editData}
