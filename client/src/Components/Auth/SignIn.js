@@ -129,7 +129,7 @@ export default function SignIn() {
                 style={{ color: "#1492e6", fontSize: "12px" }}
                 onClick={handleForgotCLick}
               >
-                forgot password
+                Forgot Password?
               </Link>
             </div>
           </div>
