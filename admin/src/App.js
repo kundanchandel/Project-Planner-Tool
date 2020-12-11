@@ -19,12 +19,10 @@ import Order from "./Components/Order/Order";
 function App() {
   return (
     <div className="container">
-      <Router>
-        <Header />
-      </Router>
       <div style={{ marginTop: "70px" }}>
         {localStorage.getItem("x-access-token") ? (
           <Router>
+             <Header />
             <Route exact path="/menu" component={Menu} />
             <Route exact path="/order" component={Order} />
           </Router>

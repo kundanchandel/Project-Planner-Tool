@@ -12,11 +12,13 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { AiOutlineUser } from "react-icons/ai";
 import axios from "../../services/Axios";
+import "./SignIn.css";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography>
       {"Copyright © "}
       <Link color="inherit" href="/">
         QDine-In
@@ -28,20 +30,11 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
+
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -83,76 +76,73 @@ export default function SignIn() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign In
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+    <div className="container">
+      <div className="brand">
+        <h1>
+          <span className="q">Q</span>Dine-In
+        </h1>
+      </div>
+      <div className="form">
+        <div className="avtar">
+          <AiOutlineUser className="avtarLogo" />
+        </div>
+        <form noValidate>
+          <div>
+            <div>
+              <input
+                className="inputField"
                 required
-                fullWidth
-                id="email"
-                label="Email Address"
+                placeholder="Email*"
                 name="email"
-                autoComplete="email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+            </div>
+            <div>
+              <input
+                className="inputField"
+                placeholder="Password*"
                 name="password"
-                label="Password"
                 type="password"
-                id="password"
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
               />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handelSubmit}
-          >
-            Sign In
-          </Button>
-          <Grid container justify="space-between">
-            <Grid item>
-              <Link href="/SignUp" variant="body2">
+            </div>
+          </div>
+
+          <div className="linkContainer">
+            <div className="link">
+              <Link
+                style={{ color: "#1492e6", fontSize: "12px" }}
+                href="/SignUp"
+              >
                 Don't have an account? Sign up
               </Link>
-            </Grid>
-            <Grid item>
-              <Link variant="body2" onClick={handleForgotCLick}>
+            </div>
+            <div className="link">
+              <Link
+                style={{ color: "#1492e6", fontSize: "12px" }}
+                onClick={handleForgotCLick}
+              >
                 forgot password
               </Link>
-            </Grid>
-          </Grid>
+            </div>
+          </div>
+          <button
+            type="submit"
+            fullWidth
+            className="submitBtn"
+            onClick={handelSubmit}
+          >
+            SIGN IN
+          </button>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+    </div>
   );
 }
