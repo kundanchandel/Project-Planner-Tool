@@ -1,7 +1,7 @@
 .container {
   background-image: url("../../Assets/LoginBg.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+    background-repeat: no-repeat;
+    background-size: cover;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
@@ -86,6 +86,9 @@
   font-size: 25px;
   padding-left: 15px;
   color: white;
+}
+.brand h1 {
+  margin-top: 15px;
 }
 .brand .q {
   color: #fe346e;

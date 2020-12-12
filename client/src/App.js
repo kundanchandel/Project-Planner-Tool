@@ -16,17 +16,20 @@ import Cart from "./Components/Cart/Cart";
 
 function App() {
   return (
-    <div>
-      <div>
+    <div className="appImage">
+      <div className="overlay">
         {localStorage.getItem("x-access-token") ? (
-          <div style={{ margin: "50px", marginTop: "100px" }}>
+          <div>
             <Router>
-              <Switch>
-                <Header />
-                <Route exact path="/" component={Home} />
-                <Route exact path="/cart" component={Cart} />
-                <Route exact path="/rest/:id" component={Restaurant} />
-              </Switch>
+              <Header />
+
+              <div style={{ margin: "0px 15px", paddingTop: "110px" }}>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/cart" component={Cart} />
+                  <Route exact path="/rest/:id" component={Restaurant} />
+                </Switch>
+              </div>
             </Router>
           </div>
         ) : (

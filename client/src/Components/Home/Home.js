@@ -8,15 +8,17 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "../../services/Axios";
 import { Link } from "react-router-dom";
+
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
   useEffect(() => {
+    console.log("hellooo");
     getData();
   }, []);
 
-  const getData = async () => {
+  const getData = async () => { 
     const response = await axios.get("/restaurant");
-    console.log(response);
+    // console.log(response);
     if (response.data) {
       setRestaurants(response.data);
     }
@@ -28,7 +30,9 @@ export default function Home() {
           <TableHead>
             <TableRow>
               <TableCell>
-                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>Restaurant Name</p>
+                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
+                  Restaurant Name
+                </p>
               </TableCell>
               <TableCell>
                 <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
