@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "../../services/Axios";
 import { Link } from "react-router-dom";
-
+import "./home.css";
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function Home() {
     getData();
   }, []);
 
-  const getData = async () => { 
+  const getData = async () => {
     const response = await axios.get("/restaurant");
     // console.log(response);
     if (response.data) {
@@ -25,24 +25,18 @@ export default function Home() {
   };
   return (
     <div>
-      <TableContainer>
+      <TableContainer style={{ color: "white" }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>
-                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
-                  Restaurant Name
-                </p>
+              <TableCell align="center">
+                <p className="tHead">Restaurant Name</p>
               </TableCell>
-              <TableCell>
-                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
-                  Contact No.
-                </p>
+              <TableCell align="center">
+                <p className="tHead">Contact No.</p>
               </TableCell>
-              <TableCell>
-                <p style={{ fontWeight: "bolder", fontSize: "1.4rem" }}>
-                  E-mail ID
-                </p>
+              <TableCell align="center">
+                <p className="tHead">E-mail ID</p>
               </TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -50,24 +44,20 @@ export default function Home() {
           <TableBody>
             {restaurants.map((restaurant) => (
               <TableRow key={restaurant.name}>
-                <TableCell component="th" scope="row">
-                  {restaurant.username}
+                <TableCell align="center" component="th" scope="row">
+                  <p className="tData">{restaurant.username}</p>
                 </TableCell>
-                <TableCell>{restaurant.phoneno}</TableCell>
-                <TableCell>{restaurant.email}</TableCell>
-                <TableCell>
+                <TableCell align="center">
+                  <p className="tData">{restaurant.phoneno}</p>
+                </TableCell>
+                <TableCell align="center">
+                  <p className="tData"> {restaurant.email}</p>
+                </TableCell>
+                <TableCell align="center">
                   {
                     <Link
+                      className="viewMenuBtn"
                       to={`/rest/${restaurant._id}`}
-                      style={{
-                        textDecoration: "none",
-                        border: "1px solid #3f51b5",
-                        borderRadius: "5px",
-                        padding: "5px",
-                        backgroundColor: "#3f51b5",
-                        color: "white",
-                        fontWeight: "bold",
-                      }}
                     >
                       {" "}
                       View Menu

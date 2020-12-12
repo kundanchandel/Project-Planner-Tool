@@ -37,6 +37,7 @@ a {
 .header .logo {
   display: block;
   float: left;
+  font-weight: bold;
   font-size: 50px;
   padding: 10px 20px;
   text-decoration: none;
@@ -58,13 +59,14 @@ a {
   cursor: pointer;
   display: inline-block;
   float: right;
-  padding: 28px 20px;
+  padding: 35px 35px;
+  font-size: 20px;
   position: relative;
   user-select: none;
 }
 
 .header .menu-icon .navicon {
-  background: #333;
+  background: white;
   display: block;
   height: 2px;
   position: relative;
@@ -74,7 +76,7 @@ a {
 
 .header .menu-icon .navicon:before,
 .header .menu-icon .navicon:after {
-  background: #333;
+  background:white;
   content: "";
   display: block;
   height: 100%;

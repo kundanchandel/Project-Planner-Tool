@@ -23,7 +23,7 @@ function App() {
             <Router>
               <Header />
 
-              <div style={{ margin: "0px 15px", paddingTop: "110px" }}>
+              <div style={{ margin: "0px 10vw", paddingTop: "110px" }}>
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route exact path="/cart" component={Cart} />
