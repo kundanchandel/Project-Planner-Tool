@@ -4,8 +4,6 @@
   color: white;
   padding: 0px;
   margin: 0px;
-  white-space: nowrap;
-  overflow: hidden;
 }
 .tData {
   color: white;
@@ -14,25 +12,39 @@
   margin: 0px;
 }
 
-.viewMenuBtn {
+.orderBtn {
   text-decoration: none;
   border-radius: 25px;
   padding: 10px 15px;
+  margin-left: 5px;
   min-width: 150px;
-  background-color: #fe346e;
+  background-color: #f3346e;
   color: white;
   font-weight: bold;
-  border: 3px solid #fe346e;
+  border: 3px solid #f3346e;
 }
-.viewMenuBtn:hover {
+.orderBtn p {
+  font-size: 1.4em;
+  margin: 0;
+  padding: 0%;
+}
+.orderBtn:hover {
   background-color: transparent;
-  color: #fe346e;
+  color: #f3346e;
 }
+.orderTotal {
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 1.4rem;
+  color: white;
+  text-align: end;
+}
+
 .tableHeading {
-  margin-top: 25px;
   font-size: 1.8em;
   font-weight: bold;
   color: white;
   text-decoration: underline solid #fe346e;
   text-underline-position: under;
+  
 }

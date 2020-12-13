@@ -69,16 +69,16 @@ export default function AddDish(props) {
                 }}
               />
               <Typography variant="h6" color="textSecondary" component="h2">
-                Total: ₹{quantity * props.dish.price}
+                Total: ₹{quantity * props.dish.price}/-
               </Typography>
             </div>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary" onClick={handleAdd}>
+          <Button size="small" style={{color:"#fe346e"}} onClick={handleAdd}>
             Add
           </Button>
-          <Button size="small" color="primary" onClick={handelCancel}>
+          <Button size="small" style={{color:"#fe346e"}} onClick={handelCancel}>
             Cancel
           </Button>
         </CardActions>

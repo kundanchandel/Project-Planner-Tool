@@ -5,9 +5,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+// import Paper from "@material-ui/core/Paper";
 import axios from "../../services/Axios";
 import { Link } from "react-router-dom";
+import { BiFoodMenu } from "react-icons/bi";
 import "./home.css";
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
@@ -25,7 +26,8 @@ export default function Home() {
   };
   return (
     <div>
-      <TableContainer style={{ color: "white" }}>
+      <div className="tableHeading">Restaurants</div>
+      <TableContainer style={{ color: "white", marginTop:"25px" }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -60,7 +62,7 @@ export default function Home() {
                       to={`/rest/${restaurant._id}`}
                     >
                       {" "}
-                      View Menu
+                      View_Menu
                     </Link>
                   }
                 </TableCell>

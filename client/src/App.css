@@ -3,7 +3,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   overflow: hidden;
-  height: 100vh;
+  background-attachment: fixed;
 }
 .overlay {
   min-height: 100vh;

@@ -8,6 +8,8 @@ import TableRow from "@material-ui/core/TableRow";
 import { MdDelete } from "react-icons/md";
 import Button from "@material-ui/core/Button";
 import axios from "../../services/Axios";
+import "./Cart.css";
+
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
@@ -54,15 +56,25 @@ export default function Cart() {
     <div>
       {cart.length > 0 && (
         <div>
-          <h1>Cart</h1>
+          <p className="tableHeading">Wish List</p>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Quantity</TableCell>
-                  <TableCell>Total</TableCell>
+                  <TableCell align="center">
+                    <p className="tHead"> Name</p>
+                  </TableCell>
+                  <TableCell align="center">
+                    <p className="tHead">Price</p>
+                  </TableCell>
+                  <TableCell align="center">
+                    {" "}
+                    <p className="tHead">Quantity</p>
+                  </TableCell>
+                  <TableCell align="center">
+                    {" "}
+                    <p className="tHead">Total</p>
+                  </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -70,14 +82,25 @@ export default function Cart() {
                 {cart.map((item, idx) => {
                   return (
                     <TableRow>
-                      <TableCell>{item.dish.name}</TableCell>
-                      <TableCell>{item.dish.price}</TableCell>
-                      <TableCell>{item.quantity}</TableCell>
-                      <TableCell>
-                        {item.dish.price * parseInt(item.quantity)}
+                      <TableCell align="center">
+                        <p className="tData">{item.dish.name}</p>
                       </TableCell>
-                      <TableCell onClick={() => handleRemoveFromCart(idx)}>
-                        {<MdDelete />}
+                      <TableCell align="center">
+                        <p className="tData">{item.dish.price}</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="tData">{item.quantity}</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="tData">
+                          {item.dish.price * parseInt(item.quantity)}
+                        </p>
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        onClick={() => handleRemoveFromCart(idx)}
+                      >
+                        <p className="tData">{<MdDelete />}</p>
                       </TableCell>
                     </TableRow>
                   );
@@ -90,49 +113,66 @@ export default function Cart() {
               display: "flex",
               marginTop: "5px",
               justifyContent: "flex-end",
+              color: "white",
             }}
           >
-            <p>Total Price: {total}/-</p>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ margin: "0px 5px 0px 25px", height: "40px" }}
-              onClick={handlePlaceOrder}
-            >
-              Place Order
-            </Button>
+            <p>Total Price: {total}/- </p>
+            <button className="orderBtn" onClick={handlePlaceOrder}>
+              <p>Place Order</p>
+            </button>
           </div>
         </div>
       )}
       {orders.dish ? (
         <div>
-          <h1>Orders</h1>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Price per plate</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Dish Total</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders.dish.map((dish) => {
-                return (
-                  <TableRow key={dish._id}>
-                    <TableCell>{dish.orderDishes.name}</TableCell>
-                    <TableCell>{dish.orderDishes.price}</TableCell>
-                    <TableCell>{dish.qnt}</TableCell>
-                    <TableCell>{dish.total}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-          <div>Orders total: {orders.orderTotal}</div>
+          <p className="tableHeading">Orders</p>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">
+                    <p className="tHead">Name</p>
+                  </TableCell>
+                  <TableCell align="center">
+                    <p className="tHead">Price per plate</p>
+                  </TableCell>
+                  <TableCell align="center">
+                    <p className="tHead">Quantity</p>
+                  </TableCell>
+                  <TableCell align="center">
+                    <p className="tHead"> Dish Total</p>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {orders.dish.map((dish) => {
+                  return (
+                    <TableRow key={dish._id}>
+                      <TableCell align="center">
+                        <p className="tData">{dish.orderDishes.name}</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="tData"> {dish.orderDishes.price}</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="tData">{dish.qnt}</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="tData">{dish.total}</p>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <div className="orderTotal">
+            <div>Order total: {orders.orderTotal}/-</div>
+          </div>
         </div>
       ) : (
-        <h1>No Orders</h1>
+        <p className="tableHeading">No Orders</p>
       )}
     </div>
   );
