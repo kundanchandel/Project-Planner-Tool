@@ -86,14 +86,14 @@ export default function Cart() {
                         <p className="tData">{item.dish.name}</p>
                       </TableCell>
                       <TableCell align="center">
-                        <p className="tData">{item.dish.price}</p>
+                        <p className="tData">₹{item.dish.price}</p>
                       </TableCell>
                       <TableCell align="center">
                         <p className="tData">{item.quantity}</p>
                       </TableCell>
                       <TableCell align="center">
                         <p className="tData">
-                          {item.dish.price * parseInt(item.quantity)}
+                        ₹{item.dish.price * parseInt(item.quantity)}
                         </p>
                       </TableCell>
                       <TableCell
@@ -116,7 +116,7 @@ export default function Cart() {
               color: "white",
             }}
           >
-            <p>Total Price: {total}/- </p>
+            <p>Total Price: ₹{total}/- </p>
             <button className="orderBtn" onClick={handlePlaceOrder}>
               <p>Place Order</p>
             </button>
@@ -152,13 +152,13 @@ export default function Cart() {
                         <p className="tData">{dish.orderDishes.name}</p>
                       </TableCell>
                       <TableCell align="center">
-                        <p className="tData"> {dish.orderDishes.price}</p>
+                        <p className="tData"> ₹{dish.orderDishes.price}</p>
                       </TableCell>
                       <TableCell align="center">
                         <p className="tData">{dish.qnt}</p>
                       </TableCell>
                       <TableCell align="center">
-                        <p className="tData">{dish.total}</p>
+                        <p className="tData">₹{dish.total}</p>
                       </TableCell>
                     </TableRow>
                   );
@@ -168,7 +168,7 @@ export default function Cart() {
           </TableContainer>
 
           <div className="orderTotal">
-            <div>Order total: {orders.orderTotal}/-</div>
+            <div>Order total: ₹{orders.orderTotal}/-</div>
           </div>
         </div>
       ) : (
