@@ -34,17 +34,16 @@ a {
   font-weight: bolder;
 }
 
-.header .logo {
+.header .brand {
   display: block;
   float: left;
-  font-weight: bold;
-  font-size: 50px;
-  padding: 10px 20px;
-  text-decoration: none;
+  padding: 5px 20px;
+  
 }
-.header .logo span {
-  color: #fe346e;
+.header .brand .brandImg {
+  height: 60px;
 }
+
 /* menu */
 
 .header .menu {

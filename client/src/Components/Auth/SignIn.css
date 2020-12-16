@@ -1,7 +1,7 @@
 .container {
   background-image: url("../../Assets/LoginBg.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
+  background-repeat: no-repeat;
+  background-size: cover;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
@@ -10,7 +10,7 @@
 }
 
 .form {
-  margin-top: 40vh;
+  margin-top: 35vh;
   transform: translatey(-50%);
   margin-left: 10vw;
   max-width: 400px;
@@ -81,15 +81,9 @@
     text-align: left;
   }
 }
-
-.brand {
-  font-size: 25px;
-  padding-left: 15px;
-  color: white;
+.brand{
+  padding:15px;
 }
-.brand h1 {
-  margin-top: 15px;
-}
-.brand .q {
-  color: #fe346e;
+.brand .brandImg {
+  height: 150px;
 }

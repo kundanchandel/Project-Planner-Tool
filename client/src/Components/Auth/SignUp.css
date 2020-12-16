@@ -75,7 +75,6 @@
   .form {
     margin-left: 5vw;
     margin-right: 5vw;
-    margin-top: 78vw;
   }
   .linkContainer {
     display: block;
@@ -83,11 +82,9 @@
   }
 }
 
-.brand {
-  font-size: 25px;
-  padding-left: 15px;
-  color: white;
+.brand{
+  padding:15px;
 }
-.brand .q {
-  color: #fe346e;
+.brand .brandImg {
+  height: 120px;
 }

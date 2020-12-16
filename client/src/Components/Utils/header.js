@@ -1,5 +1,6 @@
 import React from "react";
 import "./header.css";
+import logo from "../../Assets/logo.png";
 import { Link } from "react-router-dom";
 export default function Header() {
   // const classes = useStyles();
@@ -10,8 +11,8 @@ export default function Header() {
   };
   return (
     <header class="header">
-      <Link to="/" class="logo">
-        <span>Q</span>Dine-In
+      <Link to="/" className="brand">
+        <img src={logo} className="brandImg" />
       </Link>
       <input class="menu-btn" type="checkbox" id="menu-btn" />
       <label class="menu-icon" for="menu-btn">
@@ -20,6 +21,9 @@ export default function Header() {
       <ul class="menu">
         <li>
           <Link to="/cart">My Cart</Link>
+        </li>
+        <li>
+          <Link>Profile</Link>
         </li>
         <li
           onClick={() => {
