@@ -1,0 +1,38 @@
+.tHead {
+  font-weight: bolder;
+  font-size: 1.8rem;
+  color: white;
+  padding: 0px;
+  margin: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tData {
+  color: white;
+  font-size: 1.4rem;
+  padding: 0px;
+  margin: 0px;
+}
+
+.viewMenuBtn {
+  text-decoration: none;
+  border-radius: 25px;
+  padding: 10px 15px;
+  min-width: 150px;
+  background-color: #fe346e;
+  color: white;
+  font-weight: bold;
+  border: 3px solid #fe346e;
+}
+.viewMenuBtn:hover {
+  background-color: transparent;
+  color: #fe346e;
+}
+.tableHeading {
+  margin-top: 25px;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: white;
+  text-decoration: underline solid #fe346e;
+  text-underline-position: under;
+}

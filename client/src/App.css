@@ -1,0 +1,11 @@
+.appImage {
+  background-image: url("../src/Assets/appBg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  background-attachment: fixed;
+}
+.overlay {
+  min-height: 100vh;
+  background: rgb(0, 0, 0, 0.68);
+}

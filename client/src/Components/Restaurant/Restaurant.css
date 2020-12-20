@@ -1,0 +1,13 @@
+.atcBtn {
+        text-decoration: none;
+        border-radius: 25px;
+        padding: 8px 10px;
+        min-width: 120px;
+        background-color: #fe346e;
+        color: white;
+        border: 1px solid #fe346e;
+      }
+      .atcBtn:hover {
+        background-color: transparent;
+        color: #fe346e;
+      }

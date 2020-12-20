@@ -1,0 +1,26 @@
+.qrContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.qrInfo {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0px;
+}
+
+.qrActions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.qrActions button {
+  border: none;
+  background: none;
+  margin: 0px 5px;
+}
+
+.qrDelete:hover {
+  color: #e50000;
+}
