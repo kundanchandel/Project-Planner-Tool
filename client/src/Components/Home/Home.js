@@ -8,18 +8,17 @@ import TableRow from "@material-ui/core/TableRow";
 // import Paper from "@material-ui/core/Paper";
 import axios from "../../services/Axios";
 import { Link } from "react-router-dom";
-import { BiFoodMenu } from "react-icons/bi";
+// import { BiFoodMenu } from "react-icons/bi";
 import "./home.css";
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
+  
   useEffect(() => {
-    console.log("hellooo");
     getData();
   }, []);
 
   const getData = async () => {
     const response = await axios.get("/restaurant");
-    // console.log(response);
     if (response.data) {
       setRestaurants(response.data);
     }
@@ -27,7 +26,7 @@ export default function Home() {
   return (
     <div>
       <div className="tableHeading">Restaurants</div>
-      <TableContainer style={{ color: "white", marginTop:"25px" }}>
+      <TableContainer style={{ color: "white", marginTop: "25px" }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -59,7 +58,7 @@ export default function Home() {
                   {
                     <Link
                       className="viewMenuBtn"
-                      to={`/rest/${restaurant._id}`}
+                      to={localStorage.getItem('tableNo')?`/rest/${restaurant._id}/${localStorage.getItem('tableNo')}`:`/rest/${restaurant._id}/0`}
                     >
                       {" "}
                       View_Menu

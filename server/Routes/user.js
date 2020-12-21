@@ -260,6 +260,7 @@ Router.post("/restaurant/:id/order", isloggedin, async (req, res, next) => {
 			user: user._id,
 			orderTotal: orderTotal,
 			restaurant: restId,
+			tableNo:data.tableNo
 		});
 		// const md = Object.assign({}, {
 		// 	...data,

@@ -42,7 +42,7 @@ const Row = (props) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{order._id}</TableCell>
+        <TableCell>{order.tableNo}</TableCell>
         <TableCell>₹{order.orderTotal}</TableCell>
         <TableCell>{order.updatedAt}
         </TableCell>

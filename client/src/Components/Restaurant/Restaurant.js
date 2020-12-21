@@ -35,9 +35,11 @@ export default function Restaurant(props) {
   // const [cart, setCart] = useState({});
   const [addDishOpen, setAddDishopen] = useState(false);
   const [dishToAdd, setDishToAdd] = useState({});
+  
   const handleAddDishClose = () => {
     setAddDishopen(false);
   };
+
   const getData = async () => {
     const id = props.match.params.id;
     const response = await axios.get(`/restaurant/${id}/menu`);
@@ -46,12 +48,16 @@ export default function Restaurant(props) {
       setName(response.data.username);
     }
   };
+  
   const handleSetDishToAdd = (dish) => {
     setDishToAdd(dish);
     setAddDishopen(true);
   };
+  
   useEffect(() => {
     getData();
+    const tableNo = props.match.params.tableNo;
+    localStorage.setItem("tableNo", tableNo);
     localStorage.setItem("restId", props.match.params.id);
   }, []);
 

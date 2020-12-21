@@ -19,6 +19,10 @@ const orderSchema = mongoose.Schema({
 	restaurant: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Restaurant'
+	},
+	tableNo:{
+		type:Number,
+		default:0
 	}
 }, {
 	timestamps: true
