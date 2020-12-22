@@ -6,6 +6,9 @@ import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import axios from "../../services/Axios";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +27,7 @@ export default function ClippedDrawer(props) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [desc, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Chef's Special");
   const [image, setImage] = useState("");
 
   const onSubmit = async (e) => {
@@ -34,7 +37,7 @@ export default function ClippedDrawer(props) {
       desc,
       price,
       category,
-      image
+      image,
     };
     const response = await axios.post("/dish", data);
     if (response) {
@@ -76,15 +79,33 @@ export default function ClippedDrawer(props) {
               fullWidth="true"
             />
             <br />
-            <TextField
+            <Select
+              labelId="demo-simple-select-outlined-label"
               placeholder="Category"
-              label="Category"
+              id="demo-simple-select-outlined"
               value={category}
               onChange={(event) => setCategory(event.target.value)}
+              label="Category"
               variant="outlined"
               margin="normal"
               fullWidth="true"
-            />
+            >
+              <MenuItem value="" disabled>
+                Category
+              </MenuItem>
+              <MenuItem value={"Chef's Special"}>Chef's Special</MenuItem>
+              <MenuItem value={"Starter"}>Starter</MenuItem>
+              <MenuItem value={"Main Course"}>Main Course</MenuItem>
+              <MenuItem value={"Drink"}>Drink</MenuItem>
+              <MenuItem value={"Sizzler"}>Sizzler</MenuItem>
+              <MenuItem value={"Italian"}>Italian</MenuItem>
+              <MenuItem value={"Chinese"}>Chinese</MenuItem>
+              <MenuItem value={"South Indian"}>South Indian</MenuItem>
+              <MenuItem value={"Sea Food"}>Sea Food</MenuItem>
+              <MenuItem value={"Chicken"}>Chicken</MenuItem>
+              <MenuItem value={"Mutton"}>Mutton</MenuItem>
+              <MenuItem value={"Dessert"}>Dessert</MenuItem>
+            </Select>
             <br />
             <TextField
               placeholder="Dish Image"
@@ -95,7 +116,7 @@ export default function ClippedDrawer(props) {
               margin="normal"
               fullWidth="true"
             />
-            <br/>
+            <br />
             <TextField
               placeholder="Enter Price"
               label="Price(in ₹)"
