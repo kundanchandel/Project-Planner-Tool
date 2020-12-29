@@ -9,13 +9,14 @@ import { MdDelete } from "react-icons/md";
 import Modal from "@material-ui/core/Modal";
 import axios from "../../services/Axios";
 import "./Cart.css";
-
+import Payment from "../../Components/Payment/Payment";
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [orders, setOrders] = useState({});
   const [tableNo, setTableNo] = useState(0);
   const [tableShow, setTableShow] = useState(false);
+  const [payModal, setPayModal] = useState(false);
 
   useEffect(() => {
     getData();
@@ -54,7 +55,10 @@ export default function Cart() {
     cart.forEach((item) => {
       dish.push({ _id: item.dish._id, quantity: item.quantity });
     });
-    const response = await axios.post(`/restaurant/${restId}/order`, { dish,tableNo });
+    const response = await axios.post(`/restaurant/${restId}/order`, {
+      dish,
+      tableNo,
+    });
     if (response) {
       localStorage.setItem("cart", "");
       window.location.reload();
@@ -179,11 +183,45 @@ export default function Cart() {
             <div className="orderTotal">
               <div>Order total: ₹{orders.orderTotal}/-</div>
             </div>
+
+            <div>
+              <button
+                onClick={() => {
+                  setPayModal(true);
+                }}
+              >
+                Pay
+              </button>
+            </div>
           </div>
         ) : (
           <p className="tableHeading">No Orders</p>
         )}
       </div>
+      {
+        <Modal open={payModal}>
+          <div
+            style={{
+              width: "500px",
+              maxWidth: "90vw",
+              border: "none",
+              background: "white",
+              margin: "auto",
+              marginTop: "100px",
+              padding: "50px",
+            }}
+          >
+            <Payment amount={orders.orderTotal} handleClose={setPayModal} />
+            <button
+              onClick={() => {
+                setPayModal(false);
+              }}
+            >
+              xxxxxxxxxxxxxx
+            </button>
+          </div>
+        </Modal>
+      }
       <div>
         <Modal open={tableShow}>
           <div
@@ -205,14 +243,14 @@ export default function Cart() {
               onChange={(e) => {
                 if (e.target.value > 0) {
                   setTableNo(e.target.value);
-                  localStorage.setItem('tableNo',e.target.value)
+                  localStorage.setItem("tableNo", e.target.value);
                 }
               }}
             ></input>
             <button
               onClick={() => {
                 setTableShow(false);
-                handlePlaceOrder()
+                handlePlaceOrder();
               }}
             >
               Done
