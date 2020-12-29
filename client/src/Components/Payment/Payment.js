@@ -33,7 +33,6 @@ const CheckoutForm = ({ amount, handleClose }) => {
     });
     if (error) {
       window.alert("Something went wrong with online payment");
-      
     } else {
       handleClose(false);
     }
@@ -63,23 +62,28 @@ const CheckoutForm = ({ amount, handleClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
-      <CardElement options={cardElementOpts} />
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        maxWidth: "400px",
+      }}
+    >
+      <CardElement options={cardElementOpts} />{" "}
       <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
+        Pay{" "}
+      </button>{" "}
     </form>
   );
 };
 
 const stripePromise = loadStripe(
-  "pk_test_51I2vBGHJNzwVqUQl9KmNCkm0JTSUcgX7QgT6BwYY0l4NLw4KUiAylKuVu4DxGuaSdkfzVl1894LZmhsK0cr4ckAN00OeazOidL"
+  "pk_test_51I3ZBfDldkZujMPvtnk24VEBXlrQTZPKeuBfVH0sFQ5YZVQbyixSmnECZ6GxfGqYDQVLhwp89O1NZ5NkABmOczBQ00RF9sCo8e"
 );
 
 export default function Payment({ amount, handleClose }) {
   return (
     <Elements stripe={stripePromise}>
-      <CheckoutForm amount={amount} handleClose={handleClose} />
+      <CheckoutForm amount={amount} handleClose={handleClose} />{" "}
     </Elements>
   );
 }

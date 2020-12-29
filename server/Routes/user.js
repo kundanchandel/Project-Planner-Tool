@@ -9,14 +9,21 @@ const User = require("../models/User");
 const Dish = require("../models/Dish");
 const mail = require("../utils/mail");
 const stripe = require("stripe")(process.env.STRIPE_SEC_KEY);
-const { find } = require("../models/Dish");
+const {
+  find
+} = require("../models/Dish");
 
 const TOKENSECRET = "superSecretTokenOfQDineIn";
 require("dotenv").config();
 
 //SIGNUP
 Router.post("/signup", async (req, res, next) => {
-  const { username, email, phoneno, password } = req.body;
+  const {
+    username,
+    email,
+    phoneno,
+    password
+  } = req.body;
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -36,8 +43,7 @@ Router.post("/signup", async (req, res, next) => {
     });
   const user = await User.create(data);
   user.save();
-  const token = await jwt.sign(
-    {
+  const token = await jwt.sign({
       id: user._id,
       userEmail: user.email,
     },
@@ -50,7 +56,10 @@ Router.post("/signup", async (req, res, next) => {
 
 //LOGIN
 Router.post("/login", async (req, res, next) => {
-  const { email, password } = req.body;
+  const {
+    email,
+    password
+  } = req.body;
   const user = await User.findOne({
     email: email,
   });
@@ -63,8 +72,7 @@ Router.post("/login", async (req, res, next) => {
     return res.status(200).send({
       err: "Invalid password",
     });
-  const token = await jwt.sign(
-    {
+  const token = await jwt.sign({
       id: user._id,
       userEmail: user.email,
     },
@@ -77,7 +85,9 @@ Router.post("/login", async (req, res, next) => {
 });
 
 Router.get("/", isloggedin, async (req, res) => {
-  const { userEmail } = req.user;
+  const {
+    userEmail
+  } = req.user;
   const response = await User.findOne({
     email: userEmail,
   });
@@ -91,7 +101,10 @@ Router.get("/", isloggedin, async (req, res) => {
 
 //RESET PASSWORD
 Router.post("/resetpassword", isloggedin, async (req, res, next) => {
-  const { oldPassword, newPassword } = req.body;
+  const {
+    oldPassword,
+    newPassword
+  } = req.body;
   const userEmail = req.user.userEmail;
   const user = await User.findOne({
     email: userEmail,
@@ -112,7 +125,9 @@ Router.post("/resetpassword", isloggedin, async (req, res, next) => {
 
 //FORGOT PASSWORD
 Router.post("/forgotpassword", async (req, res, next) => {
-  const { email } = req.body;
+  const {
+    email
+  } = req.body;
   const user = await User.findOne({
     email,
   });
@@ -196,8 +211,8 @@ Router.get("/restaurant/:id", async (req, res, next) => {
 Router.get("/restaurant/:id/menu", async (req, res, next) => {
   try {
     const restaurant = await Restaurant.findOne({
-      _id: req.params.id,
-    })
+        _id: req.params.id,
+      })
       .populate("menu")
       .exec();
     res.json(restaurant);
@@ -298,7 +313,9 @@ Router.get("/order", isloggedin, async (req, res, next) => {
 });
 
 Router.post("/payment/intent", async (req, res) => {
-  const { amount } = req.body;
+  const {
+    amount
+  } = req.body;
   try {
     const pi = await stripe.paymentIntents.create({
       amount,
@@ -307,8 +324,55 @@ Router.post("/payment/intent", async (req, res) => {
     console.log(pi);
     res.status(200).send(pi.client_secret);
   } catch (err) {
-    
-    res.status(200).send({ err: "Error in Stripe Gateway" });
+
+    res.status(200).send({
+      err: "Error in Stripe Gateway"
+    });
   }
 });
+//UPDATE THE WHETHER THE ORDER IS PAID OR NOT
+Router.put("/order/:id", isloggedin, async (req, res, next) => {
+  try {
+    const order = await Order.findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      $set: {
+        isPaid: req.body.isPaid,
+      },
+    }, {
+      new: true,
+    });
+    //     console.log(order);
+    if (req.body.isPaid === true) {
+      const user = await User.findOneAndUpdate({
+        _id: order.user,
+      }, {
+        $push: {
+          pastorders: req.params.id,
+        },
+        $set: {
+          currentorder: null,
+          currentRestId: null,
+        },
+      }, {
+        new: true,
+      });
+      console.log(user);
+      res.json(user);
+    } else {
+      const user = User.findOneAndUpdate({
+        _id: order.user,
+      }, {
+        $set: {
+          currentorder: req.params.id,
+        },
+      }, {
+        new: true,
+      });
+    }
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 module.exports = Router;
