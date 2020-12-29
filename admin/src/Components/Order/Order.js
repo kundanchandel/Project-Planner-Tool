@@ -15,7 +15,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
+import Moment from 'react-moment';
 import axios from "../../services/Axios";
 
 const handleMarkPaid = async (orderId) => {
@@ -44,7 +44,7 @@ const Row = (props) => {
         </TableCell>
         <TableCell>{order.tableNo}</TableCell>
         <TableCell>₹{order.orderTotal}</TableCell>
-        <TableCell>{order.updatedAt}
+        <TableCell><Moment  format="DD-MM-YYYY HH:mm dddd">{order.updatedAt}</Moment>
         </TableCell>
         {console.log(order.isPaid)}
         {order.isPaid == false && (
