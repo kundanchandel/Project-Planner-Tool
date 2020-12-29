@@ -321,7 +321,7 @@ Router.post("/payment/intent", async (req, res) => {
       amount,
       currency: "inr",
     });
-    console.log(pi);
+    // console.log(pi);
     res.status(200).send(pi.client_secret);
   } catch (err) {
 
@@ -330,49 +330,67 @@ Router.post("/payment/intent", async (req, res) => {
     });
   }
 });
-//UPDATE THE WHETHER THE ORDER IS PAID OR NOT
-Router.put("/order/:id", isloggedin, async (req, res, next) => {
+
+Router.put("/markaspaid",isloggedin, async(req,res)=>{
+  
   try {
-    const order = await Order.findOneAndUpdate({
-      _id: req.params.id,
-    }, {
-      $set: {
-        isPaid: req.body.isPaid,
+    const userEmail = req.user.userEmail
+    const user=await user.findOne({email: userEmail})
+    const order = await Order.findOneAndUpdate(
+      {
+        _id: user.currentorder,
       },
-    }, {
-      new: true,
-    });
+      {
+        $set: {
+          isPaid: req.body.isPaid,
+        },
+      },
+      {
+        new: true,
+      }
+    );
     //     console.log(order);
     if (req.body.isPaid === true) {
-      const user = await User.findOneAndUpdate({
-        _id: order.user,
-      }, {
-        $push: {
-          pastorders: req.params.id,
+      const user = await User.findOneAndUpdate(
+        {
+          _id: order.user,
         },
-        $set: {
-          currentorder: null,
-          currentRestId: null,
+        {
+          $push: {
+            pastorders:order._id,
+          },
+          $set: {
+            currentorder: null,
+            currentRestId: null,
+          },
         },
-      }, {
-        new: true,
-      });
+        {
+          new: true,
+        }
+      );
       console.log(user);
-      res.json(user);
+      res.json({msg:"Payment successful"});
     } else {
-      const user = User.findOneAndUpdate({
-        _id: order.user,
-      }, {
-        $set: {
-          currentorder: req.params.id,
+      const user = User.findOneAndUpdate(
+        {
+          _id: order.user,
         },
-      }, {
-        new: true,
-      });
+        {
+          $set: {
+            currentorder: order._id,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json({msg:"Payment successful"});
+
     }
   } catch (error) {
+    console.log(error)
     res.json(error);
   }
-});
+})
 
 module.exports = Router;

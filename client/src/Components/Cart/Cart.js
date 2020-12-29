@@ -188,9 +188,9 @@ export default function Cart() {
               <button
                 onClick={() => {
                   setPayModal(true);
-                }}
+                }} className="pay"
               >
-                Pay
+                Proceed to Pay
               </button>
             </div>
           </div>
@@ -204,20 +204,24 @@ export default function Cart() {
             style={{
               width: "500px",
               maxWidth: "90vw",
-              border: "none",
-              background: "white",
+              background: "black",
               margin: "auto",
               marginTop: "100px",
+              marginBottom: "100px",
               padding: "50px",
+              height:"100px",
+              border:"5px pink solid",
+              borderRadius:"15px"
+      
             }}
           >
             <Payment amount={orders.orderTotal} handleClose={setPayModal} />
             <button
               onClick={() => {
                 setPayModal(false);
-              }}
+              }} className="pay"
             >
-              xxxxxxxxxxxxxx
+              Cancel
             </button>
           </div>
         </Modal>

@@ -8,6 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 import axios from "../../services/Axios";
+import "./payment.css";
 
 const CheckoutForm = ({ amount, handleClose }) => {
   console.log(amount);
@@ -34,18 +35,27 @@ const CheckoutForm = ({ amount, handleClose }) => {
     if (error) {
       window.alert("Something went wrong with online payment");
     } else {
+      const response=await axios.put("/markaspaid",{isPaid:true})
+
+      console.log(response)
+
       handleClose(false);
     }
   };
 
   const iframeStyles = {
     base: {
-      color: "black",
+      width:"150px",
+      color: "#000",
+      margin:"100px",
       fontSize: "16px",
-      "::placeholder": {
-        color: "black",
-      },
+      iconColor: "#fff",
+      backgroundColor:"white",
+      // "::placeholder": {
+      //   color: "#87bbfd"
+      // }
     },
+    
     invalid: {
       iconColor: "#FFC7EE",
       color: "#FFC7EE",
@@ -68,8 +78,8 @@ const CheckoutForm = ({ amount, handleClose }) => {
         maxWidth: "400px",
       }}
     >
-      <CardElement options={cardElementOpts} />{" "}
-      <button type="submit" disabled={!stripe}>
+      <CardElement options={cardElementOpts} className="paymodal" />{" "}
+      <button type="submit" disabled={!stripe} className="pay">
         Pay{" "}
       </button>{" "}
     </form>
