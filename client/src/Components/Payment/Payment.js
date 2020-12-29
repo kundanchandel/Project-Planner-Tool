@@ -40,6 +40,7 @@ const CheckoutForm = ({ amount, handleClose }) => {
       console.log(response)
 
       handleClose(false);
+      window.location.reload()
     }
   };
 
