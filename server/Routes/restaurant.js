@@ -12,13 +12,20 @@ const Order = require("../models/Order");
 const Restaurant = require("../models/Restaurant");
 const User = require("../models/User");
 
-const { deleteOne } = require("../models/Restaurant");
+const {
+  deleteOne
+} = require("../models/Restaurant");
 
 const TOKENSECRET = "superSecretTokenOfQDineIn";
 
 //ADMIN SIGNUP
 Router.post("/signup", async (req, res, next) => {
-  const { username, email, phoneno, password } = req.body;
+  const {
+    username,
+    email,
+    phoneno,
+    password
+  } = req.body;
 
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -38,8 +45,7 @@ Router.post("/signup", async (req, res, next) => {
     });
   const admin = await Restaurant.create(data);
   admin.save();
-  const token = await jwt.sign(
-    {
+  const token = await jwt.sign({
       id: admin._id,
       adminEmail: admin.email,
     },
@@ -52,7 +58,10 @@ Router.post("/signup", async (req, res, next) => {
 
 //ADMIN LOGIN
 Router.post("/signin", async (req, res, next) => {
-  const { email, password } = req.body;
+  const {
+    email,
+    password
+  } = req.body;
   const admin = await Restaurant.findOne({
     email: email,
   });
@@ -65,8 +74,7 @@ Router.post("/signin", async (req, res, next) => {
     return res.status(200).send({
       err: "Invalid password",
     });
-  const token = await jwt.sign(
-    {
+  const token = await jwt.sign({
       id: admin._id,
       adminEmail: admin.email,
     },
@@ -81,8 +89,8 @@ Router.post("/signin", async (req, res, next) => {
 Router.get("/dish", isloggedin, async (req, res, next) => {
   const email = req.user.adminEmail;
   const rest = await Restaurant.findOne({
-    email,
-  })
+      email,
+    })
     .populate("menu")
     .exec();
 
@@ -129,17 +137,13 @@ Router.delete("/dish/:dishid", isloggedin, async (req, res, next) => {
 
 //UPDATE DISH
 Router.put("/dish/:dishid", isloggedin, async (req, res, next) => {
-  const dish = await Dish.findOneAndUpdate(
-    {
-      _id: req.params.dishid,
-    },
-    {
-      $set: req.body,
-    },
-    {
-      new: true,
-    }
-  );
+  const dish = await Dish.findOneAndUpdate({
+    _id: req.params.dishid,
+  }, {
+    $set: req.body,
+  }, {
+    new: true,
+  });
   res.json(dish);
 });
 
@@ -148,8 +152,8 @@ Router.get("/", isloggedin, async (req, res, next) => {
   const restEmail = req.user.adminEmail;
   // console.log(restEmail);
   const rest = await Restaurant.findOne({
-    email: restEmail,
-  })
+      email: restEmail,
+    })
     .populate("menu")
     .exec();
   res.send(rest);
@@ -161,10 +165,14 @@ Router.post("/table", isloggedin, async (req, res, next) => {
   var rest = await Restaurant.findOne({
     email: restEmail,
   });
-  const { tableNo } = req.body;
+  const {
+    tableNo
+  } = req.body;
   rest.tables.push(tableNo);
   rest.save();
-  return res.send({ tables: rest.tables });
+  return res.send({
+    tables: rest.tables
+  });
 });
 
 Router.delete("/table/:tableNo", isloggedin, async (req, res, next) => {
@@ -172,65 +180,57 @@ Router.delete("/table/:tableNo", isloggedin, async (req, res, next) => {
   var rest = await Restaurant.findOne({
     email: restEmail,
   });
-  const { tableNo } = req.params;
+  const {
+    tableNo
+  } = req.params;
   const idx = rest.tables.indexOf(tableNo);
   rest.tables.splice(idx, 1);
   rest.markModified("tables");
   rest.save();
-  return res.send({ tables: rest.tables });
+  return res.send({
+    tables: rest.tables
+  });
 });
 
 //UPDATE THE WHETHER THE ORDER IS PAID OR NOT
 Router.put("/order/:id", isloggedin, async (req, res, next) => {
   try {
-    const order = await Order.findOneAndUpdate(
-      {
-        _id: req.params.id,
+    const order = await Order.findOneAndUpdate({
+      _id: req.params.id,
+    }, {
+      $set: {
+        isPaid: req.body.isPaid,
       },
-      {
-        $set: {
-          isPaid: req.body.isPaid,
-        },
-      },
-      {
-        new: true,
-      }
-    );
+    }, {
+      new: true,
+    });
     //     console.log(order);
     if (req.body.isPaid === true) {
-      const user = await User.findOneAndUpdate(
-        {
-          _id: order.user,
+      const user = await User.findOneAndUpdate({
+        _id: order.user,
+      }, {
+        $push: {
+          pastorders: req.params.id,
         },
-        {
-          $push: {
-            pastorders: req.params.id,
-          },
-          $set: {
-            currentorder: null,
-            currentRestId: null,
-          },
+        $set: {
+          currentorder: null,
+          currentRestId: null,
         },
-        {
-          new: true,
-        }
-      );
+      }, {
+        new: true,
+      });
       console.log(user);
       res.json(user);
     } else {
-      const user = User.findOneAndUpdate(
-        {
-          _id: order.user,
+      const user = User.findOneAndUpdate({
+        _id: order.user,
+      }, {
+        $set: {
+          currentorder: req.params.id,
         },
-        {
-          $set: {
-            currentorder: req.params.id,
-          },
-        },
-        {
-          new: true,
-        }
-      );
+      }, {
+        new: true,
+      });
     }
   } catch (error) {
     res.json(error);

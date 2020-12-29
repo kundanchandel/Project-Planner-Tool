@@ -46,6 +46,7 @@ export default function Cart() {
   };
 
   const handlePlaceOrder = async () => {
+    console.log("handlePlaceOrder");
     if (tableNo == 0) {
       setTableShow(true);
       return;
@@ -55,14 +56,23 @@ export default function Cart() {
     cart.forEach((item) => {
       dish.push({ _id: item.dish._id, quantity: item.quantity });
     });
-    const response = await axios.post(`/restaurant/${restId}/order`, {
-      dish,
-      tableNo,
-    });
-    if (response) {
-      localStorage.setItem("cart", "");
-      window.location.reload();
+    console.log("before try");
+    try {
+      // localhost:7000/api/user/restaurant/5fc908914d0ae04ae90b289a/order
+      console.log(restId);
+      const response = await axios.post(`/restaurant/${restId}/order`, {
+        dish,
+        tableNo,
+      });
+      console.log(response);
+      if (response) {
+        localStorage.setItem("cart", "");
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
     }
+    console.log("aFter try");
   };
   return (
     <div>
@@ -188,7 +198,8 @@ export default function Cart() {
               <button
                 onClick={() => {
                   setPayModal(true);
-                }} className="pay"
+                }}
+                className="pay"
               >
                 Proceed to Pay
               </button>
@@ -209,17 +220,17 @@ export default function Cart() {
               marginTop: "100px",
               marginBottom: "100px",
               padding: "50px",
-              height:"100px",
-              border:"5px pink solid",
-              borderRadius:"15px"
-      
+              height: "100px",
+              border: "5px pink solid",
+              borderRadius: "15px",
             }}
           >
             <Payment amount={orders.orderTotal} handleClose={setPayModal} />
             <button
               onClick={() => {
                 setPayModal(false);
-              }} className="pay"
+              }}
+              className="pay"
             >
               Cancel
             </button>

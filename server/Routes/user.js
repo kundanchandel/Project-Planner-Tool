@@ -331,63 +331,61 @@ Router.post("/payment/intent", async (req, res) => {
   }
 });
 
-Router.put("/markaspaid",isloggedin, async(req,res)=>{
-  
+Router.put("/markaspaid", isloggedin, async (req, res) => {
+
   try {
     const userEmail = req.user.userEmail
-    const user=await user.findOne({email: userEmail})
-    const order = await Order.findOneAndUpdate(
-      {
-        _id: user.currentorder,
+    const user = await User.findOne({
+      email: userEmail
+    })
+    const order = await Order.findOneAndUpdate({
+      _id: user.currentorder,
+    }, {
+      $set: {
+        isPaid: req.body.isPaid,
       },
-      {
-        $set: {
-          isPaid: req.body.isPaid,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-    //     console.log(order);
+    }, {
+      new: true,
+    });
+    console.log(order);
+    console.log(user);
+
+    console.log("************");
     if (req.body.isPaid === true) {
-      const user = await User.findOneAndUpdate(
-        {
-          _id: order.user,
+      const user = await User.findOneAndUpdate({
+        _id: order.user,
+      }, {
+        $push: {
+          pastorders: order._id,
         },
-        {
-          $push: {
-            pastorders:order._id,
-          },
-          $set: {
-            currentorder: null,
-            currentRestId: null,
-          },
+        $set: {
+          currentorder: null,
+          currentRestId: null,
         },
-        {
-          new: true,
-        }
-      );
+      }, {
+        new: true,
+      });
       console.log(user);
-      res.json({msg:"Payment successful"});
+      res.json({
+        message: "Payment successful"
+      });
     } else {
-      const user = User.findOneAndUpdate(
-        {
-          _id: order.user,
+      const user = User.findOneAndUpdate({
+        _id: order.user,
+      }, {
+        $set: {
+          currentorder: order._id,
         },
-        {
-          $set: {
-            currentorder: order._id,
-          },
-        },
-        {
-          new: true,
-        }
-      );
-      res.json({msg:"Payment successful"});
+      }, {
+        new: true,
+      });
+      res.json({
+        msg: "Payment successful"
+      });
 
     }
   } catch (error) {
+    console.log("#########");
     console.log(error)
     res.json(error);
   }
