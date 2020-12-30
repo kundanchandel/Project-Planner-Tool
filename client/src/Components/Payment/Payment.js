@@ -33,30 +33,31 @@ const CheckoutForm = ({ amount, handleClose }) => {
       payment_method: paymentMethodReq.paymentMethod.id,
     });
     if (error) {
+      console.log(error);
       window.alert("Something went wrong with online payment");
     } else {
-      const response=await axios.put("/markaspaid",{isPaid:true})
-
-      console.log(response)
-
+      const response = await axios.put("/markaspaid", { isPaid: true });
+      localStorage.setItem("tableNo", 0);
+      window.alert(response.data.message);
+      console.log(response);
       handleClose(false);
-      window.location.reload()
+      window.location.reload();
     }
   };
 
   const iframeStyles = {
     base: {
-      width:"150px",
+      width: "150px",
       color: "#000",
-      margin:"100px",
+      margin: "100px",
       fontSize: "16px",
       iconColor: "#fff",
-      backgroundColor:"white",
+      backgroundColor: "white",
       // "::placeholder": {
       //   color: "#87bbfd"
       // }
     },
-    
+
     invalid: {
       iconColor: "#FFC7EE",
       color: "#FFC7EE",
